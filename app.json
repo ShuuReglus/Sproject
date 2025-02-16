@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "react-native-expo-tutorial",
+    "slug": "react-native-expo-tutorial",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#25292e"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "写真を撮影するためにカメラへのアクセスが必要です。",
+        "NSPhotoLibraryUsageDescription": "写真を選択するためにフォトライブラリへのアクセスが必要です。"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./src/assets/favicon.png"
+    }
+  }
+}
