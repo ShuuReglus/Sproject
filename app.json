@@ -17,7 +17,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "写真を撮影するためにカメラへのアクセスが必要です。",
         "NSPhotoLibraryUsageDescription": "写真を選択するためにフォトライブラリへのアクセスが必要です。"
-      }
+      },
+      "bundleIdentifier": "com.anonymous.reactnativeexpotutorial"
     },
     "android": {
       "adaptiveIcon": {
@@ -27,8 +28,12 @@
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "package": "com.anonymous.reactnativeexpotutorial"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
