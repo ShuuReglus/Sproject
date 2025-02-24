@@ -8,6 +8,7 @@ const config = {
 
   parserOptions: {
     // `tsconfig.json` を元に ESLint を適用する
+    extraFileExtensions: [".md"],
     project: true,
   },
 
