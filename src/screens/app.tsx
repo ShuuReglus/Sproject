@@ -15,7 +15,6 @@ import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import domtoimage from "dom-to-image";
 
 import PlaceholderImage from "@/assets/images/background-image.png";
 import { Button } from "@/components/button";
@@ -64,42 +63,18 @@ const App: FC = () => {
   };
 
   const onSaveImageAsync = async () => {
-    if (Platform.OS !== "web") {
+    try {
       if (imageRef.current) {
-        if (!imageRef.current) {
-          console.log("imageRef is null, cannot capture");
-          return;
-        }
-
-        try {
-          const localUri = await captureRef(imageRef.current, {
-            height: 440,
-            quality: 1,
-          });
-
-          await MediaLibrary.saveToLibraryAsync(localUri);
-          alert("保存しました!");
-        } catch (e) {
-          console.log(e);
-        }
+        const uri = await captureRef(imageRef, {
+          format: "png",
+          quality: 0.8,
+        });
+        console.log("Captured Image URI:", uri);
+        await MediaLibrary.saveToLibraryAsync(uri);
+        alert("画像を保存しました！");
       }
-    } else {
-      if (imageRef.current) {
-        try {
-          const dataUrl = await domtoimage.toJpeg(imageRef.current, {
-            quality: 0.95,
-            width: 320,
-            height: 440,
-          });
-
-          const link = document.createElement("a");
-          link.download = "sticker-smash.jpeg";
-          link.href = dataUrl;
-          link.click();
-        } catch (e) {
-          console.log(e);
-        }
-      }
+    } catch (error) {
+      console.error("画像の保存に失敗しました:", error);
     }
   };
 
@@ -214,7 +189,7 @@ const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
-    margin: 6//test
+    margin: 6, //test
   },
 });
 
