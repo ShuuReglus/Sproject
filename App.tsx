@@ -31,6 +31,7 @@ import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 
 console.log("Execution Environment:", Constants.executionEnvironment);
+const someTestVar = "test"
 
 void SplashScreen.preventAutoHideAsync();
 
