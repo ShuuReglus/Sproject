@@ -28,12 +28,8 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({
   const containerStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        {
-          translateX: translateX.value,
-        },
-        {
-          translateY: translateY.value,
-        },
+        { translateX: translateX.value },
+        { translateY: translateY.value },
       ],
     };
   });
@@ -51,16 +47,15 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({
     });
 
   return (
-    <GestureDetector gesture={drag}>
-      <Animated.View style={[containerStyle, { top: -350 }]}>
-        <GestureDetector gesture={doubleTap}>
-          <Animated.Image
-            source={stickerSource}
-            resizeMode="contain"
-            style={imageStyle}
-          />
-        </GestureDetector>
+    <GestureDetector gesture={Gesture.Simultaneous(drag, doubleTap)}>
+      <Animated.View style={[containerStyle, { top: -350 }]}> {/* 初期位置調整 */}
+        <Animated.Image
+          source={stickerSource}
+          resizeMode="contain"
+          style={imageStyle}
+        />
       </Animated.View>
     </GestureDetector>
   );
 };
+

@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { forwardRef, type FC } from "react";
 import { Image, StyleSheet, type ImageSourcePropType } from "react-native";
 
 type ImageViewerProps = {
@@ -6,13 +6,13 @@ type ImageViewerProps = {
   selectedImage: string | null;
 };
 
-export const ImageViewer: FC<ImageViewerProps> = (props) => {
-  const imageSource = props.selectedImage
-    ? { uri: props.selectedImage }
-    : props.placeholderImageSource;
+export const ImageViewer = forwardRef<Image, ImageViewerProps>(({ placeholderImageSource, selectedImage }, ref) => {
+  const imageSource = selectedImage
+    ? { uri: selectedImage }
+    : placeholderImageSource;
 
-  return <Image source={imageSource} style={styles.image} />;
-};
+  return <Image ref={ref} source={imageSource} style={styles.image} />;
+});
 
 const styles = StyleSheet.create({
   image: {

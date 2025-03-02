@@ -3,6 +3,7 @@ import { Button } from "react-native";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 
 import { RootStackParamList } from "../navigation/AppNavigator";
+import AppScreen  from "../screens/AppScreen"; // AppScreenのインポートを追加
 
 const GoToAppButton = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();

@@ -1,17 +1,20 @@
 import React, { type FC, type ReactNode } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { EmojiList } from "../components/emoji-list";
+import { type ImageSourcePropType } from "react-native";
 
 type ButtonProps = {
   isVisible: boolean;
   onClose: () => void;
+  onSelect?: (emoji: ImageSourcePropType) => void;
   children?: ReactNode;
 };
 
 export const EmojiPicker: FC<ButtonProps> = ({
   isVisible,
   onClose,
-  children,
+  onSelect,
 }) => {
   if (!isVisible) return null; // 表示されないときは何もレンダリングしない
 
@@ -24,7 +27,8 @@ export const EmojiPicker: FC<ButtonProps> = ({
             <MaterialIcons name="close" color="#fff" size={22} />
           </Pressable>
         </View>
-        <View style={styles.childrenContainer}>{children}</View>
+        {/* EmojiListをここに追加 */}
+        <EmojiList onSelect={onSelect ?? (() => {})} onCloseModal={onClose} />
       </View>
     </Modal>
   );
@@ -61,3 +65,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+

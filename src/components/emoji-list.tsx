@@ -9,11 +9,11 @@ import {
 } from "react-native";
 
 // 絵文字リストを定義
-import emoji1 from "@/assets/images/emoji1.png";
-import emoji2 from "@/assets/images/emoji2.png";
-import emoji3 from "@/assets/images/emoji3.png";
-import emoji4 from "@/assets/images/emoji4.png";
-import emoji5 from "@/assets/images/emoji5.png";
+import emoji1 from "../assets/images/emoji1.png";
+import emoji2 from "../assets/images/emoji2.png";
+import emoji3 from "../assets/images/emoji3.png";
+import emoji4 from "../assets/images/emoji4.png";
+import emoji5 from "../assets/images/emoji5.png";
 
 export const emojiList: ImageSourcePropType[] = [
   emoji1,
@@ -23,24 +23,24 @@ export const emojiList: ImageSourcePropType[] = [
   emoji5,
 ];
 
-// `EmojiList` コンポーネントのプロパティ（props）の型定義
 type EmojiListProps = {
-  onSelect: (item: ImageSourcePropType) => void; // 絵文字が選択されたときの処理
-  onCloseModal: () => void; // モーダルを閉じる処理
+  onSelect: (item: ImageSourcePropType) => void;
+  onCloseModal: () => void;
 };
 
 export const EmojiList: FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
+  console.log("emojiListの中身:", emojiList); 
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={Platform.OS === "web"}
       data={emojiList}
-      keyExtractor={(_, index) => index.toString()} // keyを設定
+      keyExtractor={(_, index) => String(index)}
       contentContainerStyle={styles.listContainer}
       renderItem={({ item }) => (
         <Pressable
           onPress={() => {
-            console.log("選択された絵文字:", item); // デバッグ用
+            console.log("選択された絵文字:", item);
             onSelect(item);
             onCloseModal();
           }}
@@ -52,19 +52,20 @@ export const EmojiList: FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
   );
 };
 
-// スタイル定義
 const styles = StyleSheet.create({
   listContainer: {
-    borderTopRightRadius: 10, // 上の右角を丸くする
-    borderTopLeftRadius: 10, // 上の左角を丸くする
-    paddingHorizontal: 20, // 左右の余白
-    flexDirection: "row", // 横並びに配置
-    alignItems: "center", // 縦の中央揃え
-    justifyContent: "space-between", // 均等配置
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   image: {
-    width: 100, // 画像の幅
-    height: 100, // 画像の高さ
-    marginRight: 20, // 右の余白
+    width: 80,
+    height: 80,
+    marginRight: 15,
   },
 });
+
+

@@ -1,42 +1,29 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 interface UserCardProps {
-  avatarUrl: string;
   name: string;
   email: string;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ avatarUrl, name, email }) => {
+const UserCard: React.FC<UserCardProps> = ({ name, email }) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-      <View>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.email}>{email}</Text>
-      </View>
+      <Text style={styles.name}>{name}</Text>
+      <Text style={styles.email}>{email}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
+    padding: 20,
     backgroundColor: "#fff",
-    borderRadius: 5,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
+    shadowRadius: 10,
+    elevation: 5,
   },
   name: {
     fontSize: 18,
