@@ -1,9 +1,9 @@
 import {
   createUserWithEmailAndPassword,
-  getAuth,
+  //getAuth,
   type UserCredential,
 } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore"; //getFirestore,
 
 import { auth, db } from "../firebaseConfig";
 

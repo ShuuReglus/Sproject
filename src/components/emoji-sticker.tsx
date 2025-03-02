@@ -1,4 +1,3 @@
-import { type FC } from "react";
 import { type ImageSourcePropType } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -12,10 +11,10 @@ type EmojiStickerProps = {
   imageSize: number;
 };
 
-export const EmojiSticker: FC<EmojiStickerProps> = ({
+export const EmojiSticker = ({
   stickerSource,
   imageSize,
-}) => {
+}: EmojiStickerProps) => {
   const scaleImage = useSharedValue(imageSize);
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
@@ -49,8 +48,6 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({
   return (
     <GestureDetector gesture={Gesture.Simultaneous(drag, doubleTap)}>
       <Animated.View style={[containerStyle, { top: -350 }]}>
-        {" "}
-        {/* 初期位置調整 */}
         <Animated.Image
           source={stickerSource}
           resizeMode="contain"

@@ -1,4 +1,4 @@
-import { forwardRef, type FC } from "react";
+import { forwardRef } from "react";
 import { Image, StyleSheet, type ImageSourcePropType } from "react-native";
 
 type ImageViewerProps = {
