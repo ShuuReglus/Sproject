@@ -28,7 +28,7 @@ export const EmojiPicker: FC<ButtonProps> = ({
           </Pressable>
         </View>
         {/* EmojiListをここに追加 */}
-        <EmojiList onSelect={onSelect ?? (() => {})} onCloseModal={onClose} />
+        <EmojiList onSelect={onSelect ?? (() => {console.log('Something happened!');})} onCloseModal={onClose} />
       </View>
     </Modal>
   );

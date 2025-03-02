@@ -13,6 +13,7 @@ export const ImageViewer = forwardRef<Image, ImageViewerProps>(({ placeholderIma
 
   return <Image ref={ref} source={imageSource} style={styles.image} />;
 });
+ImageViewer.displayName = 'ImageViewer'
 
 const styles = StyleSheet.create({
   image: {

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, type FC } from "react";
 import {
   FlatList,
   Image,
-  Platform,
+  //Platform,
   Pressable,
   StyleSheet,
   View,
@@ -28,8 +28,10 @@ import { IconButton } from "./src/components/icon-button";
 import { ImageViewer } from "./src/components/image-viewer";
 import HomeScreen from "./src/screens/HomeScreen";
 import Constants from 'expo-constants';
-import { RootStackParamList } from "./src/navigation/types";
-const PlaceholderImage = require("./src/assets/images/background-image.png");
+import { type RootStackParamList } from "./src/navigation/types";
+
+
+import PlaceholderImage from"./src/assets/images/background-image.png";
 
 console.log('Execution Environment:', Constants.executionEnvironment);
 
@@ -95,11 +97,13 @@ const MainApp: FC = () => {
     }
   };
 
-  const pickImageAsync = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+  
+    const pickImageAsync = async () => {
+      const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          quality: 1,
+        });
+    
 
     console.log("画像選択の結果:", result);
 
