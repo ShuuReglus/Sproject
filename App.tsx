@@ -11,6 +11,7 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { captureRef } from "react-native-view-shot";
 import { registerRootComponent } from "expo";
+import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import * as SplashScreen from "expo-splash-screen";
@@ -18,7 +19,7 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-
+import PlaceholderImage from "./src/assets/images/background-image.png";
 import { Button } from "./src/components/button";
 import { CircleButton } from "./src/components/circle-button";
 import { emojiList } from "./src/components/emoji-list";
@@ -26,14 +27,10 @@ import { EmojiPicker } from "./src/components/emoji-picker";
 import { EmojiSticker } from "./src/components/emoji-sticker";
 import { IconButton } from "./src/components/icon-button";
 import { ImageViewer } from "./src/components/image-viewer";
-import HomeScreen from "./src/screens/HomeScreen";
-import Constants from 'expo-constants';
 import { type RootStackParamList } from "./src/navigation/types";
+import HomeScreen from "./src/screens/HomeScreen";
 
-
-import PlaceholderImage from"./src/assets/images/background-image.png";
-
-console.log('Execution Environment:', Constants.executionEnvironment);
+console.log("Execution Environment:", Constants.executionEnvironment);
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -43,7 +40,9 @@ const MainApp: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | null>(null);
+  const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | null>(
+    null,
+  );
 
   const [status, requestPermission] = MediaLibrary.usePermissions();
   const imageRef = useRef(null);
@@ -97,13 +96,12 @@ const MainApp: FC = () => {
     }
   };
 
-  
-    const pickImageAsync = async () => {
-      const result: ImagePicker.ImagePickerResult = await ImagePicker.launchImageLibraryAsync({
-          allowsEditing: true,
-          quality: 1,
-        });
-    
+  const pickImageAsync = async () => {
+    const result: ImagePicker.ImagePickerResult =
+      await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        quality: 1,
+      });
 
     console.log("画像選択の結果:", result);
 
@@ -128,7 +126,10 @@ const MainApp: FC = () => {
       <View style={styles.container}>
         <StatusBar style="auto" />
         <View style={styles.imageContainer}>
-          <Image source={PlaceholderImage} style={{ width: 100, height: 100 }} />  
+          <Image
+            source={PlaceholderImage}
+            style={{ width: 100, height: 100 }}
+          />
           <ImageViewer
             placeholderImageSource={PlaceholderImage}
             selectedImage={selectedImage}
@@ -149,10 +150,7 @@ const MainApp: FC = () => {
           )}
         </View>
         <View style={styles.footerContainer}>
-          <Button
-            label="Choose a photo"
-            onPress={pickImageAsync}
-          />
+          <Button label="Choose a photo" onPress={pickImageAsync} />
           <Button
             label="Use this photo"
             onPress={() => setShowAppOptions(true)}
@@ -169,14 +167,16 @@ const MainApp: FC = () => {
         <FlatList
           data={emojiList}
           renderItem={({ item }) => (
-            <Pressable onPress={() => {
-              console.log("絵文字がタップされました:", item);
-              setPickedEmoji(item);
-            }}>
+            <Pressable
+              onPress={() => {
+                console.log("絵文字がタップされました:", item);
+                setPickedEmoji(item);
+              }}
+            >
               <EmojiSticker imageSize={40} stickerSource={item} />
             </Pressable>
           )}
-          keyExtractor={(_, index) => String(index)} 
+          keyExtractor={(_, index) => String(index)}
           horizontal
           contentContainerStyle={styles.listContainer}
         />
@@ -186,16 +186,15 @@ const MainApp: FC = () => {
 };
 
 export default function App() {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="MainApp" component={MainApp} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="MainApp" component={MainApp} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -225,6 +224,3 @@ const styles = StyleSheet.create({
 });
 
 registerRootComponent(App);
-
-
-

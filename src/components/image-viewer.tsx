@@ -6,14 +6,16 @@ type ImageViewerProps = {
   selectedImage: string | null;
 };
 
-export const ImageViewer = forwardRef<Image, ImageViewerProps>(({ placeholderImageSource, selectedImage }, ref) => {
-  const imageSource = selectedImage
-    ? { uri: selectedImage }
-    : placeholderImageSource;
+export const ImageViewer = forwardRef<Image, ImageViewerProps>(
+  ({ placeholderImageSource, selectedImage }, ref) => {
+    const imageSource = selectedImage
+      ? { uri: selectedImage }
+      : placeholderImageSource;
 
-  return <Image ref={ref} source={imageSource} style={styles.image} />;
-});
-ImageViewer.displayName = 'ImageViewer'
+    return <Image ref={ref} source={imageSource} style={styles.image} />;
+  },
+);
+ImageViewer.displayName = "ImageViewer";
 
 const styles = StyleSheet.create({
   image: {

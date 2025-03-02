@@ -1,8 +1,15 @@
 import React, { type FC, type ReactNode } from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  type ImageSourcePropType,
+} from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 import { EmojiList } from "../components/emoji-list";
-import { type ImageSourcePropType } from "react-native";
 
 type ButtonProps = {
   isVisible: boolean;
@@ -28,7 +35,15 @@ export const EmojiPicker: FC<ButtonProps> = ({
           </Pressable>
         </View>
         {/* EmojiListをここに追加 */}
-        <EmojiList onSelect={onSelect ?? (() => {console.log('Something happened!');})} onCloseModal={onClose} />
+        <EmojiList
+          onSelect={
+            onSelect ??
+            (() => {
+              console.log("Something happened!");
+            })
+          }
+          onCloseModal={onClose}
+        />
       </View>
     </Modal>
   );
@@ -65,4 +80,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

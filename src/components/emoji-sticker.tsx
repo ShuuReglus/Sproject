@@ -48,7 +48,9 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({
 
   return (
     <GestureDetector gesture={Gesture.Simultaneous(drag, doubleTap)}>
-      <Animated.View style={[containerStyle, { top: -350 }]}> {/* 初期位置調整 */}
+      <Animated.View style={[containerStyle, { top: -350 }]}>
+        {" "}
+        {/* 初期位置調整 */}
         <Animated.Image
           source={stickerSource}
           resizeMode="contain"
@@ -58,4 +60,3 @@ export const EmojiSticker: FC<EmojiStickerProps> = ({
     </GestureDetector>
   );
 };
-

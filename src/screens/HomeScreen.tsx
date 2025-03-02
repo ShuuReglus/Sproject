@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, View, Button } from "react-native";
+import { Button, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { StackNavigationProp } from "@react-navigation/stack";
+
 import { type RootStackParamList } from "../navigation/types";
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, "Home">;
@@ -21,4 +22,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-

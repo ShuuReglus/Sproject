@@ -29,7 +29,7 @@ type EmojiListProps = {
 };
 
 export const EmojiList: FC<EmojiListProps> = ({ onSelect, onCloseModal }) => {
-  console.log("emojiListの中身:", emojiList); 
+  console.log("emojiListの中身:", emojiList);
   return (
     <FlatList
       horizontal
@@ -67,5 +67,3 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
 });
-
-

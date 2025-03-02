@@ -1,7 +1,8 @@
 // AppNavigator.tsx
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "../screens/HomeScreen";
+
 import AppScreen from "../screens/AppScreen";
+import HomeScreen from "../screens/HomeScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 
 export type RootStackParamList = {
@@ -23,4 +24,3 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
-
