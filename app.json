@@ -1,6 +1,6 @@
 {
   "expo": {
-    "entryPoint": "./src/screens/App.tsx",
+    "entryPoint": "./App.tsx",
     "jsEngine": "hermes",
     "name": "react-native-expo-tutorial",
     "slug": "react-native-expo-tutorial",
