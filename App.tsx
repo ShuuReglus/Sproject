@@ -22,10 +22,6 @@ import {
 
 import PlaceholderImage from "./src/assets/images/background-image.png";
 import { Button } from "./src/components/button";
-import { CircleButton } from "./src/components/circle-button";
-import { emojiList } from "./src/components/emoji-list";
-import { EmojiPicker } from "./src/components/emoji-picker";
-import { EmojiSticker } from "./src/components/emoji-sticker";
 import { IconButton } from "./src/components/icon-button";
 import { ImageViewer } from "./src/components/image-viewer";
 import { type RootStackParamList } from "./src/navigation/types";
@@ -33,7 +29,6 @@ import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 
 console.log("App.tsx が読み込まれたよ！");
-
 console.log("Execution Environment:", Constants.executionEnvironment);
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -107,8 +102,6 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
     setPickedEmoji(null);
   };
 
-  console.log("emojiListの中身:", emojiList);
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -119,9 +112,6 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
             selectedImage={selectedImage}
             ref={imageRef}
           />
-          {pickedEmoji && (
-            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-          )}
         </View>
         {!showAppOptions && (
           <View style={styles.footerContainer}>
@@ -136,7 +126,7 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
           <View style={styles.optionsContainer}>
             <View style={styles.optionsRow}>
               <IconButton icon="refresh" label="リセット" onPress={onReset} />
-              <CircleButton onPress={onAddSticker} />
+              <View style={styles.spacer} />
               <IconButton
                 icon="save-alt"
                 label="保存"
@@ -145,30 +135,6 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
             </View>
           </View>
         )}
-        <EmojiPicker
-          isVisible={isModalVisible}
-          onClose={onModalClose}
-          onSelect={(emoji) => {
-            console.log("選択された絵文字:", emoji);
-            setPickedEmoji(emoji);
-          }}
-        />
-        <FlatList
-          data={emojiList}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => {
-                console.log("絵文字がタップされました:", item);
-                setPickedEmoji(item);
-              }}
-            >
-              <EmojiSticker imageSize={40} stickerSource={item} />
-            </Pressable>
-          )}
-          keyExtractor={(_, index) => String(index)}
-          horizontal
-          contentContainerStyle={styles.listContainer}
-        />
       </View>
     </GestureHandlerRootView>
   );
@@ -211,6 +177,9 @@ const styles = StyleSheet.create({
   optionsRow: {
     alignItems: "center",
     flexDirection: "row",
+  },
+  spacer: {
+    width: 20, // ボタン間のスペースを設定
   },
   listContainer: {
     paddingHorizontal: 10,
