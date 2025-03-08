@@ -26,6 +26,7 @@ export const registerUser = async ({
       email,
       password,
     );
+    console.log("ユーザー登録成功:", userCredential.user);
     const user = userCredential.user;
 
     // Firestoreにユーザーデータ保存

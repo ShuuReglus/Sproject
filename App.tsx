@@ -30,6 +30,7 @@ import { IconButton } from "./src/components/icon-button";
 import { ImageViewer } from "./src/components/image-viewer";
 import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
+import RegisterScreen from "./src/screens/RegisterScreen";
 
 console.log("App.tsx が読み込まれたよ！");
 
@@ -183,6 +184,7 @@ export default function App() {
           options={{ headerShown: true }}
         />
         <Stack.Screen name="MainApp" component={MainApp} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
