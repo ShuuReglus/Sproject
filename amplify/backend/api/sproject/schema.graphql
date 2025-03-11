@@ -1,0 +1,18 @@
+type Image @model {
+  id: ID!
+  url: String!
+  comments: [Comment] @hasMany
+}
+
+type Comment @model {
+  id: ID!
+  imageId: ID!
+  text: String!
+  character: Character! @belongsTo
+}
+
+type Character @model {
+  id: ID!
+  name: String!
+  avatarUrl: String!
+}

@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState, type FC } from "react";
 import {
-  FlatList,
-  Image,
-  Pressable,
   StyleSheet,
   View,
   type ImageSourcePropType,
@@ -28,12 +25,18 @@ import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 
+
+
 console.log("App.tsx が読み込まれたよ！");
 console.log("Execution Environment:", Constants.executionEnvironment);
+
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 type MainAppProps = StackScreenProps<RootStackParamList, "MainApp">;
+
+
 
 const MainApp: FC<MainAppProps> = ({ navigation }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
