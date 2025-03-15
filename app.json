@@ -1,12 +1,11 @@
 {
   "expo": {
-    "entryPoint": "./App.tsx",
     "jsEngine": "hermes",
     "name": "react-native-expo-tutorial",
     "slug": "react-native-expo-tutorial",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/icon-fixed.jpg",
+    "icon": "./src/assets/icon-fixed.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {

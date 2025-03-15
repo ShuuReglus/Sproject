@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState, type FC } from "react";
-import {
-  StyleSheet,
-  View,
-  type ImageSourcePropType,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { captureRef } from "react-native-view-shot";
 import { registerRootComponent } from "expo";
@@ -12,10 +8,10 @@ import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  type StackScreenProps,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Amplify, type ResourcesConfig } from "aws-amplify";
+
+import awsExports from "@/aws-exports"; // ファイル名はプロジェクトによるかも
 
 import PlaceholderImage from "./src/assets/images/background-image.png";
 import { Button } from "./src/components/button";
@@ -25,26 +21,16 @@ import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 
-
+Amplify.configure(awsExports as ResourcesConfig);
 
 console.log("App.tsx が読み込まれたよ！");
 console.log("Execution Environment:", Constants.executionEnvironment);
 
-
-
 const Stack = createStackNavigator<RootStackParamList>();
 
-type MainAppProps = StackScreenProps<RootStackParamList, "MainApp">;
-
-
-
-const MainApp: FC<MainAppProps> = ({ navigation }) => {
+const MainApp: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showAppOptions, setShowAppOptions] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pickedEmoji, setPickedEmoji] = useState<ImageSourcePropType | null>(
-    null,
-  );
 
   const [status, requestPermission] = MediaLibrary.usePermissions();
   const imageRef = useRef(null);
@@ -55,16 +41,6 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
       void requestPermission();
     }
   }, [status, requestPermission]);
-
-  const onModalClose = () => {
-    console.log("絵文字ピッカーが閉じられました");
-    setIsModalVisible(false);
-  };
-
-  const onAddSticker = () => {
-    console.log("ステッカーボタンが押されました");
-    setIsModalVisible(true);
-  };
 
   const onSaveImageAsync = async () => {
     try {
@@ -102,7 +78,6 @@ const MainApp: FC<MainAppProps> = ({ navigation }) => {
   const onReset = () => {
     console.log("リセットボタンが押されました");
     setShowAppOptions(false);
-    setPickedEmoji(null);
   };
 
   return (
@@ -183,9 +158,6 @@ const styles = StyleSheet.create({
   },
   spacer: {
     width: 20, // ボタン間のスペースを設定
-  },
-  listContainer: {
-    paddingHorizontal: 10,
   },
 });
 
