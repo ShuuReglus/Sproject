@@ -1,10 +1,26 @@
 import openai
 import os
+import boto3
 
-# OpenAI APIキーを設定（環境変数から取得が推奨）
+# OpenAI APIキー
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=OPENAI_API_KEY)
+
+# AWS S3 クライアントの設定
+s3_client = boto3.client("s3")
+
+def generate_presigned_url(bucket_name, object_key, expiration=3600):
+    """ 署名付きURLを生成（デフォルト有効期限: 1時間） """
+    url = s3_client.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": bucket_name, "Key": object_key},
+        ExpiresIn=expiration
+    )
+    return url
 
 def generate_ogiri_comment(image_url, rekognition_labels):
+    print("✅ generate_ogiri_comment が呼ばれた")
+
     prompt = f"""
     あなたは、画像を見て「写真で一言」の大喜利コメントを考えるAIです。
     以下の大喜利テクニックを参考にしながら、短くてインパクトのある面白いコメントを作成してください。
@@ -24,20 +40,27 @@ def generate_ogiri_comment(image_url, rekognition_labels):
     上記を踏まえて、大喜利のコメントをお願いします。
     """
     
-    def generate_ogiri_comment(image_url, rekognition_labels):
-        response = openai.ChatCompletion.create(  # 直接 `openai.ChatCompletion.create` を呼ぶ
-        model="gpt-4-turbo",
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",   #大事な時は４にする！
         messages=[
             {"role": "system", "content": "あなたは大喜利AIです。"},
-            {"role": "user", "content": f"画像: {image_url}, ラベル: {rekognition_labels}"},
+            {"role": "user", "content": prompt},
         ],
         max_tokens=100
-        )
-        return response["choices"][0]["message"]["content"]
-    
+    )
 
-# 例: 画像のURLとRekognitionの分析結果
-image_url = "https://sproject-app-image-storage.s3.amazonaws.com/your-image.jpg"
+    print("🔍 API Response:", response)
+    return response.choices[0].message.content
+
+# S3の画像情報
+bucket_name = "sproject-app-image-storage"
+object_key = "your-image.jpg"
+
+# 署名付きURLを取得
+image_url = generate_presigned_url(bucket_name, object_key)
+print("✅ 画像URL:", image_url)
+
+# Rekognitionのラベル（仮）
 rekognition_labels = "- Book (99.81%)\n- Comics (99.81%)\n- Publication (99.81%)\n- Cartoon (96.46%)\n- Person (84.76%)\n- Face (70.72%)\n- Head (70.72%)"
 
 # コメント生成
