@@ -1,57 +1,166 @@
-type ImageType = {
-  id: string;
-  url: string;
-  uploadedBy: string;
-  createdAt: string;
-  updatedAt: string;
+/* tslint:disable */
+/* eslint-disable */
+// this is an auto generated file. This will be overwritten
+
+import * as APITypes from "../API";
+type GeneratedMutation<InputType, OutputType> = string & {
+  __generatedMutationInput: InputType;
+  __generatedMutationOutput: OutputType;
 };
 
-const createImageMutation = `
-  mutation CreateImage($input: CreateImageInput!) {
-    createImage(input: $input) {
-      id
-      url
-      uploadedBy
-      createdAt
-      updatedAt
-    }
+export const createCharacter = /* GraphQL */ `mutation CreateCharacter(
+  $input: CreateCharacterInput!
+  $condition: ModelCharacterConditionInput
+) {
+  createCharacter(input: $input, condition: $condition) {
+    id
+    name
+    imageUrl
+    description
+    createdAt
+    updatedAt
+    __typename
   }
-`;
-
-const addImage = async (): Promise<void> => {
-  const newImage = {
-    url: "https://example.com/image.png",
-    description: "テスト画像",
-    uploadedBy: "test-user",
-  };
-
-  const requestBody = {
-    query: createImageMutation,
-    variables: { input: newImage },
-  };
-
-  try {
-    const response: Response = await fetch("https://example.com/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTPエラー! ステータス: ${response.status}`);
-    }
-
-    const result = (await response.json()) as {
-      data: { createImage: ImageType };
-    };
-    console.log("画像追加成功:", result.data.createImage);
-  } catch (error) {
-    console.error("画像追加失敗:", error);
+}
+` as GeneratedMutation<
+  APITypes.CreateCharacterMutationVariables,
+  APITypes.CreateCharacterMutation
+>;
+export const updateCharacter = /* GraphQL */ `mutation UpdateCharacter(
+  $input: UpdateCharacterInput!
+  $condition: ModelCharacterConditionInput
+) {
+  updateCharacter(input: $input, condition: $condition) {
+    id
+    name
+    imageUrl
+    description
+    createdAt
+    updatedAt
+    __typename
   }
-};
-
-addImage()
-  .then(() => console.log("画像アップロード完了"))
-  .catch((error) => console.error("画像アップロード失敗", error));
+}
+` as GeneratedMutation<
+  APITypes.UpdateCharacterMutationVariables,
+  APITypes.UpdateCharacterMutation
+>;
+export const deleteCharacter = /* GraphQL */ `mutation DeleteCharacter(
+  $input: DeleteCharacterInput!
+  $condition: ModelCharacterConditionInput
+) {
+  deleteCharacter(input: $input, condition: $condition) {
+    id
+    name
+    imageUrl
+    description
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteCharacterMutationVariables,
+  APITypes.DeleteCharacterMutation
+>;
+export const createComment = /* GraphQL */ `mutation CreateComment(
+  $input: CreateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  createComment(input: $input, condition: $condition) {
+    id
+    content
+    characterId
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateCommentMutationVariables,
+  APITypes.CreateCommentMutation
+>;
+export const updateComment = /* GraphQL */ `mutation UpdateComment(
+  $input: UpdateCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  updateComment(input: $input, condition: $condition) {
+    id
+    content
+    characterId
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateCommentMutationVariables,
+  APITypes.UpdateCommentMutation
+>;
+export const deleteComment = /* GraphQL */ `mutation DeleteComment(
+  $input: DeleteCommentInput!
+  $condition: ModelCommentConditionInput
+) {
+  deleteComment(input: $input, condition: $condition) {
+    id
+    content
+    characterId
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteCommentMutationVariables,
+  APITypes.DeleteCommentMutation
+>;
+export const createImage = /* GraphQL */ `mutation CreateImage(
+  $input: CreateImageInput!
+  $condition: ModelImageConditionInput
+) {
+  createImage(input: $input, condition: $condition) {
+    id
+    url
+    uploadedBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateImageMutationVariables,
+  APITypes.CreateImageMutation
+>;
+export const updateImage = /* GraphQL */ `mutation UpdateImage(
+  $input: UpdateImageInput!
+  $condition: ModelImageConditionInput
+) {
+  updateImage(input: $input, condition: $condition) {
+    id
+    url
+    uploadedBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateImageMutationVariables,
+  APITypes.UpdateImageMutation
+>;
+export const deleteImage = /* GraphQL */ `mutation DeleteImage(
+  $input: DeleteImageInput!
+  $condition: ModelImageConditionInput
+) {
+  deleteImage(input: $input, condition: $condition) {
+    id
+    url
+    uploadedBy
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteImageMutationVariables,
+  APITypes.DeleteImageMutation
+>;
