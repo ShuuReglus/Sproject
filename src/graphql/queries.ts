@@ -16,6 +16,7 @@ export const getCharacter = /* GraphQL */ `query GetCharacter($id: ID!) {
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -36,6 +37,7 @@ export const listCharacters = /* GraphQL */ `query ListCharacters(
       description
       createdAt
       updatedAt
+      owner
       __typename
     }
     nextToken
@@ -53,6 +55,7 @@ export const getComment = /* GraphQL */ `query GetComment($id: ID!) {
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -72,6 +75,7 @@ export const listComments = /* GraphQL */ `query ListComments(
       characterId
       createdAt
       updatedAt
+      owner
       __typename
     }
     nextToken
@@ -89,6 +93,7 @@ export const getImage = /* GraphQL */ `query GetImage($id: ID!) {
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -105,6 +110,7 @@ export const listImages = /* GraphQL */ `query ListImages(
       uploadedBy
       createdAt
       updatedAt
+      owner
       __typename
     }
     nextToken

@@ -19,6 +19,7 @@ export const createCharacter = /* GraphQL */ `mutation CreateCharacter(
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -37,6 +38,7 @@ export const updateCharacter = /* GraphQL */ `mutation UpdateCharacter(
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -55,6 +57,7 @@ export const deleteCharacter = /* GraphQL */ `mutation DeleteCharacter(
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -72,6 +75,7 @@ export const createComment = /* GraphQL */ `mutation CreateComment(
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -89,6 +93,7 @@ export const updateComment = /* GraphQL */ `mutation UpdateComment(
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -106,6 +111,7 @@ export const deleteComment = /* GraphQL */ `mutation DeleteComment(
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -123,6 +129,7 @@ export const createImage = /* GraphQL */ `mutation CreateImage(
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -140,6 +147,7 @@ export const updateImage = /* GraphQL */ `mutation UpdateImage(
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -157,6 +165,7 @@ export const deleteImage = /* GraphQL */ `mutation DeleteImage(
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }

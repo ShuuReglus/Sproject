@@ -8,14 +8,18 @@ type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionOutput: OutputType;
 };
 
-export const onCreateCharacter = /* GraphQL */ `subscription OnCreateCharacter($filter: ModelSubscriptionCharacterFilterInput) {
-  onCreateCharacter(filter: $filter) {
+export const onCreateCharacter = /* GraphQL */ `subscription OnCreateCharacter(
+  $filter: ModelSubscriptionCharacterFilterInput
+  $owner: String
+) {
+  onCreateCharacter(filter: $filter, owner: $owner) {
     id
     name
     imageUrl
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -23,14 +27,18 @@ export const onCreateCharacter = /* GraphQL */ `subscription OnCreateCharacter($
   APITypes.OnCreateCharacterSubscriptionVariables,
   APITypes.OnCreateCharacterSubscription
 >;
-export const onUpdateCharacter = /* GraphQL */ `subscription OnUpdateCharacter($filter: ModelSubscriptionCharacterFilterInput) {
-  onUpdateCharacter(filter: $filter) {
+export const onUpdateCharacter = /* GraphQL */ `subscription OnUpdateCharacter(
+  $filter: ModelSubscriptionCharacterFilterInput
+  $owner: String
+) {
+  onUpdateCharacter(filter: $filter, owner: $owner) {
     id
     name
     imageUrl
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -38,14 +46,18 @@ export const onUpdateCharacter = /* GraphQL */ `subscription OnUpdateCharacter($
   APITypes.OnUpdateCharacterSubscriptionVariables,
   APITypes.OnUpdateCharacterSubscription
 >;
-export const onDeleteCharacter = /* GraphQL */ `subscription OnDeleteCharacter($filter: ModelSubscriptionCharacterFilterInput) {
-  onDeleteCharacter(filter: $filter) {
+export const onDeleteCharacter = /* GraphQL */ `subscription OnDeleteCharacter(
+  $filter: ModelSubscriptionCharacterFilterInput
+  $owner: String
+) {
+  onDeleteCharacter(filter: $filter, owner: $owner) {
     id
     name
     imageUrl
     description
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -53,13 +65,17 @@ export const onDeleteCharacter = /* GraphQL */ `subscription OnDeleteCharacter($
   APITypes.OnDeleteCharacterSubscriptionVariables,
   APITypes.OnDeleteCharacterSubscription
 >;
-export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filter: ModelSubscriptionCommentFilterInput) {
-  onCreateComment(filter: $filter) {
+export const onCreateComment = /* GraphQL */ `subscription OnCreateComment(
+  $filter: ModelSubscriptionCommentFilterInput
+  $owner: String
+) {
+  onCreateComment(filter: $filter, owner: $owner) {
     id
     content
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -67,13 +83,17 @@ export const onCreateComment = /* GraphQL */ `subscription OnCreateComment($filt
   APITypes.OnCreateCommentSubscriptionVariables,
   APITypes.OnCreateCommentSubscription
 >;
-export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filter: ModelSubscriptionCommentFilterInput) {
-  onUpdateComment(filter: $filter) {
+export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment(
+  $filter: ModelSubscriptionCommentFilterInput
+  $owner: String
+) {
+  onUpdateComment(filter: $filter, owner: $owner) {
     id
     content
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -81,13 +101,17 @@ export const onUpdateComment = /* GraphQL */ `subscription OnUpdateComment($filt
   APITypes.OnUpdateCommentSubscriptionVariables,
   APITypes.OnUpdateCommentSubscription
 >;
-export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filter: ModelSubscriptionCommentFilterInput) {
-  onDeleteComment(filter: $filter) {
+export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment(
+  $filter: ModelSubscriptionCommentFilterInput
+  $owner: String
+) {
+  onDeleteComment(filter: $filter, owner: $owner) {
     id
     content
     characterId
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -95,13 +119,17 @@ export const onDeleteComment = /* GraphQL */ `subscription OnDeleteComment($filt
   APITypes.OnDeleteCommentSubscriptionVariables,
   APITypes.OnDeleteCommentSubscription
 >;
-export const onCreateImage = /* GraphQL */ `subscription OnCreateImage($filter: ModelSubscriptionImageFilterInput) {
-  onCreateImage(filter: $filter) {
+export const onCreateImage = /* GraphQL */ `subscription OnCreateImage(
+  $filter: ModelSubscriptionImageFilterInput
+  $owner: String
+) {
+  onCreateImage(filter: $filter, owner: $owner) {
     id
     url
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -109,13 +137,17 @@ export const onCreateImage = /* GraphQL */ `subscription OnCreateImage($filter: 
   APITypes.OnCreateImageSubscriptionVariables,
   APITypes.OnCreateImageSubscription
 >;
-export const onUpdateImage = /* GraphQL */ `subscription OnUpdateImage($filter: ModelSubscriptionImageFilterInput) {
-  onUpdateImage(filter: $filter) {
+export const onUpdateImage = /* GraphQL */ `subscription OnUpdateImage(
+  $filter: ModelSubscriptionImageFilterInput
+  $owner: String
+) {
+  onUpdateImage(filter: $filter, owner: $owner) {
     id
     url
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -123,13 +155,17 @@ export const onUpdateImage = /* GraphQL */ `subscription OnUpdateImage($filter: 
   APITypes.OnUpdateImageSubscriptionVariables,
   APITypes.OnUpdateImageSubscription
 >;
-export const onDeleteImage = /* GraphQL */ `subscription OnDeleteImage($filter: ModelSubscriptionImageFilterInput) {
-  onDeleteImage(filter: $filter) {
+export const onDeleteImage = /* GraphQL */ `subscription OnDeleteImage(
+  $filter: ModelSubscriptionImageFilterInput
+  $owner: String
+) {
+  onDeleteImage(filter: $filter, owner: $owner) {
     id
     url
     uploadedBy
     createdAt
     updatedAt
+    owner
     __typename
   }
 }

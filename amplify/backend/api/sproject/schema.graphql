@@ -1,23 +1,26 @@
 # キャラクターのモデル
-type Character @model {
+type Character @model @auth(rules: [{ allow: public, operations: [read] }, { allow: owner }]) {
   id: ID!
   name: String!
   imageUrl: String
   description: String
 }
 
+
 # コメントのモデル（画像に紐づく）
-type Comment @model {
+type Comment @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   content: String!
-  characterId: ID! # キャラクターと紐付けるためのID
+  characterId: ID!
   createdAt: AWSDateTime!
 }
 
+
 # 画像のモデル
-type Image @model {
+type Image @model @auth(rules: [{ allow: public, operations: [read] }, { allow: owner }]) {
   id: ID!
   url: String!
   uploadedBy: String
   createdAt: AWSDateTime!
 }
+

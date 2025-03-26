@@ -11,7 +11,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Amplify, type ResourcesConfig } from "aws-amplify";
 
-import awsExports from "@/aws-exports";
+import awsExports from "./aws-exports";
 import PlaceholderImage from "./src/assets/images/background-image.png";
 import CharacterImage from "./src/assets/images/character.png"; // キャラ画像を追加
 import { Button } from "./src/components/button";
@@ -21,7 +21,7 @@ import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 
-Amplify.configure(awsExports as ResourcesConfig);
+Amplify.configure(awsExports);
 
 const Stack = createStackNavigator<RootStackParamList>();
 

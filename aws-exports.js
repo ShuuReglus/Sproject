@@ -29,11 +29,7 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ],
-    "aws_user_files_s3_bucket": "myapp-user-uploads37f59-staging",
-    "aws_user_files_s3_bucket_region": "us-east-1",
-    "aws_storage_bucket": "myapp-user-uploads37f59-staging",
-    "aws_storage_region": "us-east-1"
+    ]
 };
 
 

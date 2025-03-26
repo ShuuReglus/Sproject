@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* esslint:disable */
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
@@ -18,6 +18,7 @@ export type ModelCharacterConditionInput = {
   not?: ModelCharacterConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelStringInput = {
@@ -68,6 +69,7 @@ export type Character = {
   description?: string | null,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type UpdateCharacterInput = {
@@ -96,6 +98,7 @@ export type ModelCommentConditionInput = {
   or?: Array< ModelCommentConditionInput | null > | null,
   not?: ModelCommentConditionInput | null,
   updatedAt?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelIDInput = {
@@ -121,6 +124,7 @@ export type Comment = {
   characterId: string,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type UpdateCommentInput = {
@@ -149,6 +153,7 @@ export type ModelImageConditionInput = {
   or?: Array< ModelImageConditionInput | null > | null,
   not?: ModelImageConditionInput | null,
   updatedAt?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type Image = {
@@ -158,6 +163,7 @@ export type Image = {
   uploadedBy?: string | null,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type UpdateImageInput = {
@@ -181,6 +187,7 @@ export type ModelCharacterFilterInput = {
   and?: Array< ModelCharacterFilterInput | null > | null,
   or?: Array< ModelCharacterFilterInput | null > | null,
   not?: ModelCharacterFilterInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelCharacterConnection = {
@@ -198,6 +205,7 @@ export type ModelCommentFilterInput = {
   and?: Array< ModelCommentFilterInput | null > | null,
   or?: Array< ModelCommentFilterInput | null > | null,
   not?: ModelCommentFilterInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelCommentConnection = {
@@ -215,6 +223,7 @@ export type ModelImageFilterInput = {
   and?: Array< ModelImageFilterInput | null > | null,
   or?: Array< ModelImageFilterInput | null > | null,
   not?: ModelImageFilterInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelImageConnection = {
@@ -232,6 +241,7 @@ export type ModelSubscriptionCharacterFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCharacterFilterInput | null > | null,
   or?: Array< ModelSubscriptionCharacterFilterInput | null > | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -272,6 +282,7 @@ export type ModelSubscriptionCommentFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCommentFilterInput | null > | null,
   or?: Array< ModelSubscriptionCommentFilterInput | null > | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelSubscriptionImageFilterInput = {
@@ -282,6 +293,7 @@ export type ModelSubscriptionImageFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionImageFilterInput | null > | null,
   or?: Array< ModelSubscriptionImageFilterInput | null > | null,
+  owner?: ModelStringInput | null,
 };
 
 export type CreateCharacterMutationVariables = {
@@ -298,6 +310,7 @@ export type CreateCharacterMutation = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -315,6 +328,7 @@ export type UpdateCharacterMutation = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -332,6 +346,7 @@ export type DeleteCharacterMutation = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -348,6 +363,7 @@ export type CreateCommentMutation = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -364,6 +380,7 @@ export type UpdateCommentMutation = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -380,6 +397,7 @@ export type DeleteCommentMutation = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -396,6 +414,7 @@ export type CreateImageMutation = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -412,6 +431,7 @@ export type UpdateImageMutation = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -428,6 +448,7 @@ export type DeleteImageMutation = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -444,6 +465,7 @@ export type GetCharacterQuery = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -464,6 +486,7 @@ export type ListCharactersQuery = {
       description?: string | null,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -481,6 +504,7 @@ export type GetCommentQuery = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -500,6 +524,7 @@ export type ListCommentsQuery = {
       characterId: string,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -517,6 +542,7 @@ export type GetImageQuery = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -536,6 +562,7 @@ export type ListImagesQuery = {
       uploadedBy?: string | null,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -543,6 +570,7 @@ export type ListImagesQuery = {
 
 export type OnCreateCharacterSubscriptionVariables = {
   filter?: ModelSubscriptionCharacterFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateCharacterSubscription = {
@@ -554,11 +582,13 @@ export type OnCreateCharacterSubscription = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateCharacterSubscriptionVariables = {
   filter?: ModelSubscriptionCharacterFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateCharacterSubscription = {
@@ -570,11 +600,13 @@ export type OnUpdateCharacterSubscription = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteCharacterSubscriptionVariables = {
   filter?: ModelSubscriptionCharacterFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteCharacterSubscription = {
@@ -586,11 +618,13 @@ export type OnDeleteCharacterSubscription = {
     description?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateCommentSubscriptionVariables = {
   filter?: ModelSubscriptionCommentFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateCommentSubscription = {
@@ -601,11 +635,13 @@ export type OnCreateCommentSubscription = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateCommentSubscriptionVariables = {
   filter?: ModelSubscriptionCommentFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateCommentSubscription = {
@@ -616,11 +652,13 @@ export type OnUpdateCommentSubscription = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteCommentSubscriptionVariables = {
   filter?: ModelSubscriptionCommentFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteCommentSubscription = {
@@ -631,11 +669,13 @@ export type OnDeleteCommentSubscription = {
     characterId: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnCreateImageSubscriptionVariables = {
   filter?: ModelSubscriptionImageFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateImageSubscription = {
@@ -646,11 +686,13 @@ export type OnCreateImageSubscription = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateImageSubscriptionVariables = {
   filter?: ModelSubscriptionImageFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateImageSubscription = {
@@ -661,11 +703,13 @@ export type OnUpdateImageSubscription = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteImageSubscriptionVariables = {
   filter?: ModelSubscriptionImageFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteImageSubscription = {
@@ -676,5 +720,6 @@ export type OnDeleteImageSubscription = {
     uploadedBy?: string | null,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };

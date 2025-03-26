@@ -17,6 +17,9 @@
       },
       "api": {
         "sproject": {}
+      },
+      "storage": {
+        "imageStorage": {}
       }
     }
   }
