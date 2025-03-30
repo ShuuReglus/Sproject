@@ -20,7 +20,7 @@
         "NSPhotoLibraryUsageDescription": "写真を選択するためにフォトライブラリへのアクセスが必要です。",
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.anonymous.reactnativeexpotutorial"
+      "bundleIdentifier": "com.anonymous.sproject"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,12 +30,9 @@
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE",
-        "CAMERA",
-        "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
       ],
-      "package": "com.anonymous.reactnativeexpotutorial"
+      "package": "com.anonymous.sproject"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
@@ -44,6 +41,9 @@
       "eas": {
         "projectId": "870c8d20-e83b-4711-b0bb-d566a1c70864"
       }
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

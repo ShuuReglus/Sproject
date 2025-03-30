@@ -1,52 +1,60 @@
 import { S3 } from 'aws-sdk';
- // URLエンコード
+import * as FileSystem from 'expo-file-system';
+import { useState } from 'react';
+
 
 // S3の設定
 const s3 = new S3({
-  region: 'us-east-1',  // バケットのリージョン
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID as string|| '', // 環境変数からキーを取得
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string|| '', // 環境変数からキーを取得
+  region: 'ap-northeast-1',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID as string|| '',
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string|| '',
 });
 
-// アップロード処理
-const uploadImageToS3 = async (file: File) => {
-  const safeFileName = encodeURIComponent(file.name); // URLエンコードでファイル名を安全にする
+const useUploadImage = () => {
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>('');
 
-  // paramsの設定
-  const params = {
-    Bucket: 'your-bucket-name', // ここにバケット名を指定
-    Key: safeFileName,
-    Body: file,
-    ContentType: file.type, // ファイルタイプを指定
-    ACL: 'public-read', // アクセス権限を設定（必要に応じて変更）
+  const uploadImageToS3 = async (uri: string) => {
+    setIsUploading(true);
+    try {
+      console.log('画像をアップロード中:', uri);
+
+      const fileData = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const buffer = Buffer.from(fileData, 'base64');
+      const fileName = uri.split('/').pop() ?? 'uploaded-image.jpg';
+      const fileType = 'image/jpeg';
+
+      const params = {
+        Bucket: 'sproject-app-image-storage',
+        Key: fileName,
+        Body: buffer,
+        ContentType: fileType,
+        ACL: 'public-read',
+      };
+
+      const result = await s3.upload(params).promise();
+      console.log('アップロード成功:', result.Location);
+      setComment('アップロード成功！');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('アップロード失敗:', errorMessage);
+      setComment('アップロードに失敗しました');
+    }
+    setIsUploading(false);
   };
 
-  try {
-    const result = await s3.upload(params).promise(); // アップロード処理
-    console.log('アップロード成功:', result);
-  } catch (error) {
-    console.error('アップロード失敗:', error);
-  }
+  return { uploadImageToS3, isUploading, comment };
 };
 
-// 例えば、HTMLのファイル選択で呼び出す場合
-const fileInput = document.getElementById('fileInput') as HTMLInputElement | null;
-if (fileInput) {
-    fileInput.addEventListener('change', (event) => {
-        (async () => {
-          const input = event.target as HTMLInputElement;
-          const file = input.files?.[0];
-          if (file) {
-            await uploadImageToS3(file);
-          }
-        })().catch((error) => {
-          console.error('アップロード中にエラーが発生しました:', error);
-        });
-      });
-      
-} else {
-  console.error('ファイル入力要素が見つかりません');
-}
+export default useUploadImage;
+
+
+
+
+
 
 
 

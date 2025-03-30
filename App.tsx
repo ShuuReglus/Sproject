@@ -9,7 +9,11 @@ import * as MediaLibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Amplify, type ResourcesConfig } from "aws-amplify";
+import { Amplify } from "aws-amplify";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import * as FileSystem from "expo-file-system";
+import 'react-native-polyfill-globals/auto';
+
 
 import awsExports from "./aws-exports";
 import PlaceholderImage from "./src/assets/images/background-image.png";
@@ -21,9 +25,24 @@ import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
 
+// Amplifyの設定
 Amplify.configure(awsExports);
 
 const Stack = createStackNavigator<RootStackParamList>();
+
+// AWS S3設定のためのアクセスキー取得 (expo-constants経由)
+const awsAccessKeyId = Constants.expoConfig?.extra?.AWS_ACCESS_KEY_ID as string;
+const awsSecretAccessKey = Constants.expoConfig?.extra?.AWS_SECRET_ACCESS_KEY as string;
+
+const s3Client = new S3Client({
+  region: "ap-northeast-1",
+  credentials: {
+    accessKeyId: awsAccessKeyId,
+    secretAccessKey: awsSecretAccessKey,
+  },
+  forcePathStyle: true, // ✅ パススタイルを有効化
+});
+
 
 const MainApp: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -38,20 +57,38 @@ const MainApp: FC = () => {
     }
   }, [status, requestPermission]);
 
-  // 画像アップロード関数（仮）
+  // 画像アップロード処理
   const uploadImageToS3 = async (uri: string) => {
-    setIsUploading(true);
+    setIsUploading(true);  // アップロード中に切り替え
     try {
       console.log("画像をアップロード中:", uri);
-      // TODO: ここでAWS S3へのアップロード処理を追加
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 仮の遅延処理
-      setComment("おぉ、これは良い画像だね！");
-    } catch (error) {
-      console.error("アップロード失敗:", error);
-      setComment("うーん、アップロードに失敗したよ…");
-    }
-    setIsUploading(false);
-  };
+
+      const fileData = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const buffer = new Uint8Array(atob(fileData).split("").map(c => c.charCodeAt(0)));
+      const fileName = uri.split("/").pop() ?? "uploaded-image.jpg";
+      const fileType = "image/jpeg";
+
+      const command = new PutObjectCommand({
+        Bucket: "sproject-app-image-storage",
+        Key: fileName,
+        Body: buffer,
+        ContentType: fileType,
+        ACL: "public-read",
+      });
+
+      const result = await s3Client.send(command);
+    console.log("アップロード成功:", result);
+    setComment("おぉ、これは良い画像だね！");
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("アップロード失敗:", errorMessage);
+    setComment("うーん、アップロードに失敗したよ…");
+  }
+  setIsUploading(false);
+};
 
   // 画像選択処理
   const pickImageAsync = async () => {
@@ -63,7 +100,7 @@ const MainApp: FC = () => {
     if (!result.canceled) {
       const uri = result.assets[0].uri;
       setSelectedImage(uri);
-      await uploadImageToS3(uri); // 画像をアップロード
+      await uploadImageToS3(uri);  // 画像をアップロード
     } else {
       alert("画像が選択されていません");
     }
@@ -112,6 +149,8 @@ export default function App() {
   );
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -153,4 +192,7 @@ const styles = StyleSheet.create({
 });
 
 registerRootComponent(App);
+
+
+
 
