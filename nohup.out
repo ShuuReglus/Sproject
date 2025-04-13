@@ -1,0 +1,12 @@
+ * Serving Flask app 'analyze_with_gpt4v'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.0.100:5001
+[33mPress CTRL+C to quit[0m
+ * Serving Flask app 'analyze_with_gpt4v'
+ * Debug mode: off
+Address already in use
+Port 5001 is in use by another program. Either identify and stop that program, or start the server with a different port.
+192.168.0.100 - - [14/Apr/2025 07:05:18] "POST /generate-comment HTTP/1.1" 200 -

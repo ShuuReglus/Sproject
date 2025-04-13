@@ -8,16 +8,17 @@ import * as MediaLibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { uploadImageToS3 } from "./src/awsS3Utils"; // 修正ポイント
+import axios from "axios"; // Axiosをインポート
+import { uploadImageToS3 } from "./src/awsS3Utils";
 
 import PlaceholderImage from "./src/assets/images/background-image.png";
-import CharacterImage from "./src/assets/images/character.png"; // キャラ画像を追加
+import CharacterImage from "./src/assets/images/character.png";
 import { Button } from "./src/components/button";
 import { ImageViewer } from "./src/components/image-viewer";
 import { type RootStackParamList } from "./src/navigation/types";
 import HomeScreen from "./src/screens/HomeScreen";
 import RegisterScreen from "./src/screens/RegisterScreen";
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -48,11 +49,22 @@ const MainApp: FC = () => {
       // アップロード処理
       setIsUploading(true);
       try {
+        // S3に画像をアップロード
+        const fileName = uri.split("/").pop() ?? "uploaded-image.jpg";
         await uploadImageToS3(uri);
-        setComment("おぉ、これは良い画像だね！");
+
+        // Flaskサーバーにリクエストを送信してコメントを生成
+        const response = await axios.post("http://192.168.0.100:5001/generate-comment", {
+          bucket_name: "sproject-app-image-storage", // S3バケット名
+          object_key: fileName, // アップロードした画像のキー
+          rekognition_labels: "No labels provided", // 必要に応じてRekognitionのラベルを渡す
+        });
+
+        // コメントを設定
+        setComment(response.data.comment);
       } catch (error) {
-        console.error("アップロード失敗:", error);
-        setComment("うーん、アップロードに失敗したよ…");
+        console.error("エラー:", error);
+        setComment("コメント生成に失敗しました");
       }
       setIsUploading(false);
     } else {

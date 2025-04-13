@@ -1,6 +1,13 @@
+from flask import Flask, request, jsonify
 import openai
 import os
 import boto3
+from flask_cors import CORS
+
+# Flaskアプリケーションの初期化
+app = Flask(__name__)
+CORS(app)  # CORSを有効化
+
 
 # OpenAI APIキー
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -19,8 +26,7 @@ def generate_presigned_url(bucket_name, object_key, expiration=3600):
     return url
 
 def generate_ogiri_comment(image_url, rekognition_labels):
-    print("✅ generate_ogiri_comment が呼ばれた")
-
+    """ 大喜利コメントを生成 """
     prompt = f"""
     あなたは、画像を見て「写真で一言」の大喜利コメントを考えるAIです。
     以下の大喜利テクニックを参考にしながら、短くてインパクトのある面白いコメントを作成してください。
@@ -41,29 +47,31 @@ def generate_ogiri_comment(image_url, rekognition_labels):
     """
     
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",   #大事な時は４にする！
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "あなたは大喜利AIです。"},
             {"role": "user", "content": prompt},
         ],
         max_tokens=100
     )
-
-    print("🔍 API Response:", response)
     return response.choices[0].message.content
 
-# S3の画像情報
-bucket_name = "sproject-app-image-storage"
-object_key = "your-image.jpg"
+@app.route("/generate-comment", methods=["POST"])
+def generate_comment():
+    """ コメント生成API """
+    data = request.json
+    bucket_name = data["bucket_name"]
+    object_key = data["object_key"]
 
-# 署名付きURLを取得
-image_url = generate_presigned_url(bucket_name, object_key)
-print("✅ 画像URL:", image_url)
+    # 署名付きURLを生成
+    image_url = generate_presigned_url(bucket_name, object_key)
 
-# Rekognitionのラベル（仮）
-rekognition_labels = "- Book (99.81%)\n- Comics (99.81%)\n- Publication (99.81%)\n- Cartoon (96.46%)\n- Person (84.76%)\n- Face (70.72%)\n- Head (70.72%)"
+    # Rekognitionのラベル（仮）
+    rekognition_labels = data.get("rekognition_labels", "No labels provided")
 
-# コメント生成
-comment = generate_ogiri_comment(image_url, rekognition_labels)
-print("\n🗨️ GPT-4Vの大喜利コメント: ", comment)
+    # コメント生成
+    comment = generate_ogiri_comment(image_url, rekognition_labels)
+    return jsonify({"comment": comment})
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001)
