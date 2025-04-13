@@ -1,61 +1,45 @@
-import { S3 } from 'aws-sdk';
-import * as FileSystem from 'expo-file-system';
-import { useState } from 'react';
+import axios from "axios";
+import * as FileSystem from "expo-file-system";
+import { Buffer } from "buffer";
 
+declare const global: any;
 
-// S3の設定
-const s3 = new S3({
-  region: 'ap-northeast-1',
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID as string|| '',
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string|| '',
-});
+// Bufferをグローバルに設定
+if (typeof global.Buffer === "undefined") {
+  global.Buffer = Buffer;
+}
 
-const useUploadImage = () => {
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>('');
+// API Gatewayのエンドポイント
+const API_ENDPOINT = "https://kehm6xw1xh.execute-api.ap-northeast-1.amazonaws.com/develop";
 
-  const uploadImageToS3 = async (uri: string) => {
-    setIsUploading(true);
-    try {
-      console.log('画像をアップロード中:', uri);
+export const uploadImageToS3 = async (uri: string) => {
+  try {
+    console.log("画像をアップロード中:", uri);
 
-      const fileData = await FileSystem.readAsStringAsync(uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
+    // ファイル名を取得
+    const fileName = uri.split("/").pop() ?? "uploaded-image.jpg";
+    console.log("ファイル名:", fileName);
 
-      const buffer = Buffer.from(fileData, 'base64');
-      const fileName = uri.split('/').pop() ?? 'uploaded-image.jpg';
-      const fileType = 'image/jpeg';
+    // ファイルをBase64形式で読み込む
+    const fileData = await FileSystem.readAsStringAsync(uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    console.log("ファイルデータを読み込みました");
 
-      const params = {
-        Bucket: 'sproject-app-image-storage',
-        Key: fileName,
-        Body: buffer,
-        ContentType: fileType,
-        ACL: 'public-read',
-      };
+    // Base64データをバイナリに変換
+    const binaryData = Buffer.from(fileData, "base64");
 
-      const result = await s3.upload(params).promise();
-      console.log('アップロード成功:', result.Location);
-      setComment('アップロード成功！');
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error('アップロード失敗:', errorMessage);
-      setComment('アップロードに失敗しました');
-    }
-    setIsUploading(false);
-  };
+    // API GatewayにPUTリクエストを送信
+    const response = await axios.put(`${API_ENDPOINT}/${fileName}`, binaryData, {
+      headers: {
+        "Content-Type": "image/jpeg", // 必要に応じて変更
+      },
+    });
 
-  return { uploadImageToS3, isUploading, comment };
+    console.log("アップロード成功:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("アップロード失敗:", error);
+    throw error;
+  }
 };
-
-export default useUploadImage;
-
-
-
-
-
-
-
-
-
