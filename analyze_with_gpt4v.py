@@ -127,7 +127,7 @@ def generate_ogiri_comment(image_url, rekognition_labels):
     """
     try:
         response = client.chat.completions.create(
-            model="gpt-4",##3.5-turbo
+            model="gpt-3.5-turbo",##3.5-turboのが安い4本番
             messages=[
                 {"role": "system", "content": "あなたは大喜利AIです。"},
                 {"role": "user", "content": prompt},

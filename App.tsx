@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, type FC } from "react";
-import { StyleSheet, SafeAreaView, Image, Text, ActivityIndicator, Alert } from "react-native";
+import { StyleSheet, SafeAreaView, ScrollView, Image, Text, ActivityIndicator, Alert } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { registerRootComponent } from "expo";
 import Constants from "expo-constants";
@@ -91,8 +91,16 @@ const MainApp: FC = () => {
               <SafeAreaView style={styles.commentContainer}>
                 <Image source={CharacterImage} style={styles.character} />
                 <SafeAreaView style={styles.commentBox}>
-                  <Text style={styles.commentText}>{comment}</Text>
+                  <ScrollView>
+                    <Text
+                     style={{ ...styles.commentText, flexShrink: 1, flexWrap: "wrap" }}
+                     numberOfLines={0}
+                     >
+                     {comment}
+                    </Text>
+                  </ScrollView>
                 </SafeAreaView>
+
               </SafeAreaView>
             )
           )}
@@ -115,30 +123,34 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    paddingTop: 58,
+    
     alignItems: "center",
   },
   footerContainer: {
-    flex: 1 / 3,
+    flex: 1 / 5,
     alignItems: "center",
   },
   commentContainer: {
-    position: "absolute",
-    top: 100,
-    left: "10%",
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column", // 水平方向でなく縦に並べる
+    justifyContent: "flex-start", // 上から配置
+    position: "relative", // absolute から relative に変更
+    alignItems: "center", // 真ん中に配置
   },
+  
   character: {
-    width: 50,
-    height: 50,
+    width: 90,
+    height: 90,
     marginRight: 10,
   },
   commentBox: {
     backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
+    maxHeight: 70, // 最大高さを指定
+    overflow: "hidden", // 超えた分は隠す
   },
+  
+  
   commentText: {
     color: "black",
   },
