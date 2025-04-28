@@ -1,32 +1,97 @@
-from flask import Flask, request, jsonify
+import asyncio
 import openai
 import os
 import boto3
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
+import logging
 
-# Flaskアプリケーションの初期化
+# .envファイル読み込み
+load_dotenv()
+
+# --- ロギング設定 ---
+logging.basicConfig(
+    level=logging.DEBUG,  # すべてのログを出す
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+)
+
+# Flaskアプリケーション初期化
 app = Flask(__name__)
-CORS(app)  # CORSを有効化
 
+CORS(app)
 
-# OpenAI APIキー
+# OpenAI APIクライアント
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=OPENAI_API_KEY)
 
-# AWS S3 クライアントの設定
-s3_client = boto3.client("s3")
+# AWSクライアント
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    region_name=os.getenv('AWS_REGION')
+)
+rekognition_client = boto3.client(
+    'rekognition',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    region_name=os.getenv('AWS_REGION')
+)
+
+# --- 非同期関数たち ---
+
+async def analyze_image_with_rekognition_async(bucket_name, object_key):
+    logging.info(f"Start Rekognition async: {bucket_name}/{object_key}")
+    try:
+        result = await asyncio.to_thread(analyze_image_with_rekognition, bucket_name, object_key)
+        logging.info(f"End Rekognition async: {result}")
+        return result
+    except Exception as e:
+        logging.error(f"Error in Rekognition async: {e}")
+        return "Error in Rekognition"
+
+async def generate_ogiri_comment_async(image_url, rekognition_labels):
+    logging.info(f"Start OpenAI async: {image_url}")
+    try:
+        result = await asyncio.to_thread(generate_ogiri_comment, image_url, rekognition_labels)
+        logging.info(f"End OpenAI async: {result[:50]}...")  # 先頭だけ表示
+        return result
+    except Exception as e:
+        logging.error(f"Error in OpenAI async: {e}")
+        return "Error in OpenAI"
+
+# --- 同期関数たち（元々あったやつ） ---
 
 def generate_presigned_url(bucket_name, object_key, expiration=3600):
-    """ 署名付きURLを生成（デフォルト有効期限: 1時間） """
-    url = s3_client.generate_presigned_url(
-        "get_object",
-        Params={"Bucket": bucket_name, "Key": object_key},
-        ExpiresIn=expiration
-    )
-    return url
+    try:
+        url = s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": bucket_name, "Key": object_key},
+            ExpiresIn=expiration
+        )
+        logging.info(f"Generated presigned URL: {url}")
+        return url
+    except Exception as e:
+        logging.error(f"Error generating presigned URL: {e}")
+        return None
+
+def analyze_image_with_rekognition(bucket_name, object_key):
+    try:
+        response = rekognition_client.detect_labels(
+            Image={"S3Object": {"Bucket": bucket_name, "Name": object_key}},
+            MaxLabels=20,
+            MinConfidence=70
+        )
+        labels = [label["Name"] for label in response["Labels"]]
+        logging.info(f"Detected labels: {labels}")
+        return ", ".join(labels)
+    except Exception as e:
+        logging.error(f"Rekognition error: {e}")
+        return "No labels provided"
 
 def generate_ogiri_comment(image_url, rekognition_labels):
-    """ 大喜利コメントを生成 """
     prompt = f"""
     あなたは、画像を見て「写真で一言」の大喜利コメントを考えるAIです。
     以下の大喜利テクニックを参考にしながら、短くてインパクトのある面白いコメントを作成してください。
@@ -42,36 +107,48 @@ def generate_ogiri_comment(image_url, rekognition_labels):
 
     【画像URL】 {image_url}
     【画像の分析結果】 {rekognition_labels}
-
-    上記を踏まえて、大喜利のコメントをお願いします。
     """
-    
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "あなたは大喜利AIです。"},
-            {"role": "user", "content": prompt},
-        ],
-        max_tokens=100
-    )
-    return response.choices[0].message.content
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "あなたは大喜利AIです。"},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=100
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        logging.error(f"OpenAI APIエラー: {e}")
+        return "OpenAI APIでエラーが発生しました。"
+
+# --- APIエンドポイント ---
 
 @app.route("/generate-comment", methods=["POST"])
-def generate_comment():
+async def generate_comment():
     """ コメント生成API """
-    data = request.json
-    bucket_name = data["bucket_name"]
-    object_key = data["object_key"]
+    try:
+        data = request.json
+        logging.info(f"Received request data: {data}")
+        bucket_name = data["bucket_name"]
+        object_key = data["object_key"]
 
-    # 署名付きURLを生成
-    image_url = generate_presigned_url(bucket_name, object_key)
+        image_url = generate_presigned_url(bucket_name, object_key)
+        if not image_url:
+            raise ValueError("署名付きURLの生成に失敗しました。")
 
-    # Rekognitionのラベル（仮）
-    rekognition_labels = data.get("rekognition_labels", "No labels provided")
+        rekognition_labels = await analyze_image_with_rekognition_async(bucket_name, object_key)
+        comment = await generate_ogiri_comment_async(image_url, rekognition_labels)
+        logging.info(f"Generated comment: {comment}")
 
-    # コメント生成
-    comment = generate_ogiri_comment(image_url, rekognition_labels)
-    return jsonify({"comment": comment})
+        return jsonify({"comment": comment}), 200
+    except Exception as e:
+        logging.error(f"Error in generate_comment: {e}")
+        return jsonify({"error": str(e)}), 500
+
+# --- サーバー起動 ---
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5003, debug=True)
+
+

@@ -1,26 +1,18 @@
 import React, { useEffect, useRef, useState, type FC } from "react";
-import { StyleSheet, View, Image, Text, ActivityIndicator, Alert } from "react-native";
+import { StyleSheet, SafeAreaView, Image, Text, ActivityIndicator, Alert } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { registerRootComponent } from "expo";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios"; // Axiosをインポート
 import { uploadImageToS3 } from "./src/awsS3Utils";
 
 import PlaceholderImage from "./src/assets/images/background-image.png";
-import CharacterImage from "./src/assets/images/character.png";
+import CharacterImage from "@/assets/images/character.png";
 import { Button } from "./src/components/button";
 import { ImageViewer } from "./src/components/image-viewer";
-import { type RootStackParamList } from "./src/navigation/types";
-import HomeScreen from "./src/screens/HomeScreen";
-import RegisterScreen from "./src/screens/RegisterScreen";
-import "react-native-get-random-values";
-
-const Stack = createStackNavigator<RootStackParamList>();
 
 const MainApp: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -49,19 +41,18 @@ const MainApp: FC = () => {
       // アップロード処理
       setIsUploading(true);
       try {
-        // S3に画像をアップロード
+        console.log("画像をアップロード中:", uri);
         const fileName = uri.split("/").pop() ?? "uploaded-image.jpg";
+        console.log("ファイル名:", fileName);
+  
         await uploadImageToS3(uri);
-
-        // Flaskサーバーにリクエストを送信してコメントを生成
-        const response = await axios.post("http://192.168.0.100:5001/generate-comment", {
-          bucket_name: "sproject-app-image-storage", // S3バケット名
-          object_key: fileName, // アップロードした画像のキー
-          rekognition_labels: "No labels provided", // 必要に応じてRekognitionのラベルを渡す
-        });
-
-        // コメントを設定
-        setComment(response.data.comment);
+        console.log("S3アップロード完了");
+  
+        console.log("Flaskサーバーにコメントリクエスト送信");
+        const response = await generateComment(fileName);
+        console.log("Flaskサーバーからレスポンス受信:", response);
+  
+        setComment(response.comment);
       } catch (error) {
         console.error("エラー:", error);
         setComment("コメント生成に失敗しました");
@@ -72,11 +63,22 @@ const MainApp: FC = () => {
     }
   };
 
+  // Flaskサーバーにリクエストを送信する関数
+  const generateComment = async (fileName: string) => {
+    const response = await axios.post("http://192.168.0.102:5003/generate-comment", {
+      bucket_name: "sproject-app-image-storage", // S3バケット名
+      object_key: fileName, // アップロードした画像のキー
+    },
+    { timeout: 5000 } // タイムアウト5秒
+    );
+    return response.data;
+  };
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
-        <View style={styles.imageContainer}>
+        <SafeAreaView style={styles.imageContainer}>
           <ImageViewer
             placeholderImageSource={PlaceholderImage}
             selectedImage={selectedImage}
@@ -86,34 +88,24 @@ const MainApp: FC = () => {
             <ActivityIndicator size="large" color="#fff" style={styles.loading} />
           ) : (
             selectedImage && (
-              <View style={styles.commentContainer}>
+              <SafeAreaView style={styles.commentContainer}>
                 <Image source={CharacterImage} style={styles.character} />
-                <View style={styles.commentBox}>
+                <SafeAreaView style={styles.commentBox}>
                   <Text style={styles.commentText}>{comment}</Text>
-                </View>
-              </View>
+                </SafeAreaView>
+              </SafeAreaView>
             )
           )}
-        </View>
-        <View style={styles.footerContainer}>
+        </SafeAreaView>
+        <SafeAreaView style={styles.footerContainer}>
           <Button label="写真を選ぶ" onPress={pickImageAsync} />
-        </View>
-      </View>
+        </SafeAreaView>
+      </SafeAreaView>
     </GestureHandlerRootView>
   );
 };
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: true }} />
-        <Stack.Screen name="MainApp" component={MainApp} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+export default registerRootComponent(MainApp);
 
 const styles = StyleSheet.create({
   container: {
@@ -132,7 +124,7 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     position: "absolute",
-    top: 20,
+    top: 100,
     left: "10%",
     flexDirection: "row",
     alignItems: "center",
@@ -154,8 +146,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-registerRootComponent(App);
 
 
 
