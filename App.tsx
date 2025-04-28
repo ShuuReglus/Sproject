@@ -65,7 +65,7 @@ const MainApp: FC = () => {
 
   // Flaskサーバーにリクエストを送信する関数
   const generateComment = async (fileName: string) => {
-    const response = await axios.post("http://192.168.0.102:5003/generate-comment", {
+    const response = await axios.post("https://0530-2404-7a85-24e1-5000-3534-4ff7-4339-ac36.ngrok-free.app/generate-comment", {
       bucket_name: "sproject-app-image-storage", // S3バケット名
       object_key: fileName, // アップロードした画像のキー
     },
