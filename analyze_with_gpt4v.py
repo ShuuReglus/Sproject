@@ -7,6 +7,10 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import logging
 
+
+MAX_RETRIES = 3
+RETRY_DELAY = 1  # 秒数
+
 # .envファイル読み込み
 load_dotenv()
 
@@ -61,6 +65,19 @@ async def generate_ogiri_comment_async(image_url, rekognition_labels):
     except Exception as e:
         logging.error(f"Error in OpenAI async: {e}")
         return "Error in OpenAI"
+    
+
+async def retry_async(func, *args, **kwargs):
+    """ 非同期関数をリトライするヘルパー """
+    last_exception = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            return await asyncio.wait_for(func(*args, **kwargs), timeout=10)
+        except Exception as e:
+            last_exception = e
+            logging.warning(f"Retrying due to error: {e} (Attempt {attempt+1}/{MAX_RETRIES})")
+            await asyncio.sleep(RETRY_DELAY)
+    raise last_exception    
 
 # --- 同期関数たち（元々あったやつ） ---
 
@@ -81,7 +98,7 @@ def analyze_image_with_rekognition(bucket_name, object_key):
     try:
         response = rekognition_client.detect_labels(
             Image={"S3Object": {"Bucket": bucket_name, "Name": object_key}},
-            MaxLabels=20,
+            MaxLabels=10,
             MinConfidence=70
         )
         labels = [label["Name"] for label in response["Labels"]]
@@ -110,7 +127,7 @@ def generate_ogiri_comment(image_url, rekognition_labels):
     """
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",##3.5-turbo
             messages=[
                 {"role": "system", "content": "あなたは大喜利AIです。"},
                 {"role": "user", "content": prompt},
@@ -124,27 +141,50 @@ def generate_ogiri_comment(image_url, rekognition_labels):
 
 # --- APIエンドポイント ---
 
+
 @app.route("/generate-comment", methods=["POST"])
 async def generate_comment():
-    """ コメント生成API """
+    """ コメント生成API（超安定版） """
     try:
+        bucket_name = None
+        object_key = None
+        image_url = None
+        rekognition_labels = []
+
         data = request.json
         logging.info(f"Received request data: {data}")
-        bucket_name = data["bucket_name"]
-        object_key = data["object_key"]
+        bucket_name = data.get("bucket_name")
+        object_key = data.get("object_key")
+
+        if not bucket_name or not object_key:
+            raise ValueError("バケット名またはオブジェクトキーが指定されていません。")
 
         image_url = generate_presigned_url(bucket_name, object_key)
         if not image_url:
             raise ValueError("署名付きURLの生成に失敗しました。")
 
-        rekognition_labels = await analyze_image_with_rekognition_async(bucket_name, object_key)
-        comment = await generate_ogiri_comment_async(image_url, rekognition_labels)
+        rekognition_labels = await retry_async(analyze_image_with_rekognition_async, bucket_name, object_key)
+        if not rekognition_labels:
+            raise ValueError("ラベル取得に失敗しました。")
+
+        comment = await retry_async(generate_ogiri_comment_async, image_url, rekognition_labels)
+        if not comment:
+            raise ValueError("コメント生成に失敗しました。")
+
         logging.info(f"Generated comment: {comment}")
 
+        del data
+        del rekognition_labels
+
         return jsonify({"comment": comment}), 200
+
     except Exception as e:
         logging.error(f"Error in generate_comment: {e}")
-        return jsonify({"error": str(e)}), 500
+    # 軽めの遊び心あるエラーコメントを返す
+        safe_message = "目が開かなくて見えない！もう一回！"
+        return jsonify({"comment": safe_message}), 200
+
+
 
 # --- サーバー起動 ---
 
