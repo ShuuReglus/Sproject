@@ -642,3 +642,401 @@ Usage: flask run [OPTIONS]
 Try 'flask run --help' for help.
 
 Error: Failed to find Flask application or factory in module 'app'. Use 'app:name' to specify one.
+[2025-06-15 11:24:10 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:58108)
+[2025-06-15 11:24:10 +0900] [58107] [ERROR] Worker (pid:58108) was sent SIGABRT!
+[2025-06-15 11:24:10 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:58109)
+[2025-06-15 11:24:10 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:58110)
+--- Logging error ---
+Traceback (most recent call last):
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+RuntimeError: reentrant call inside <_io.BufferedWriter name='<stderr>'>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/arbiter.py", line 241, in handle_chld
+    self.reap_workers()
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/arbiter.py", line 553, in reap_workers
+    self.log.error(msg)
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/glogging.py", line 271, in error
+    self.error_log.error(msg, *args, **kwargs)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1518, in error
+    self._log(ERROR, msg, args, **kwargs)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1634, in _log
+    self.handle(record)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1644, in handle
+    self.callHandlers(record)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1706, in callHandlers
+    hdlr.handle(record)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 978, in handle
+    self.emit(record)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1118, in emit
+    self.handleError(record)
+  File "/Users/shuuregulus7/anaconda3/lib/python3.11/logging/__init__.py", line 1031, in handleError
+    sys.stderr.write('--- Logging error ---\n')
+RuntimeError: reentrant call inside <_io.BufferedWriter name='<stderr>'>
+Call stack:
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/bin/gunicorn", line 8, in <module>
+    sys.exit(run())
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/app/wsgiapp.py", line 66, in run
+    WSGIApplication("%(prog)s [OPTIONS] [APP_MODULE]", prog=prog).run()
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/app/base.py", line 235, in run
+    super().run()
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/app/base.py", line 71, in run
+    Arbiter(self).run()
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/arbiter.py", line 209, in run
+    self.murder_workers()
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/arbiter.py", line 503, in murder_workers
+    self.log.critical("WORKER TIMEOUT (pid:%s)", pid)
+  File "/Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/gunicorn/glogging.py", line 268, in critical
+    self.error_log.critical(msg, *args, **kwargs)
+Message: 'WORKER TIMEOUT (pid:%s)'
+Arguments: (58110,)
+[2025-06-15 11:24:10 +0900] [58107] [ERROR] Worker (pid:58110) was sent SIGABRT!
+[2025-06-15 11:24:10 +0900] [40144] [INFO] Booting worker with pid: 40144
+[2025-06-15 11:24:10 +0900] [40145] [INFO] Booting worker with pid: 40145
+[2025-06-15 11:24:10 +0900] [40146] [INFO] Booting worker with pid: 40146
+2025-06-15 11:24:20 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-06-15 11:24:20 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-06-15 11:24:20 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-06-15 11:24:20 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-06-15 11:24:20 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-06-15 11:24:20 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-06-15 11:24:20 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10badc4a0>
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-06-15 11:24:20 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad84a0>
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-06-15 11:24:20 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10ba54cc0>
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c1242c0>
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10ba54cc0>
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10ba54c20>
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c1242c0>
+2025-06-15 11:24:20 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c228220>
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10ba549a0>
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10ba54a40>
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+2025-06-15 11:24:21 [DEBUG] Setting s3 timeout as (60, 60)
+2025-06-15 11:24:21 [DEBUG] Setting s3 timeout as (60, 60)
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10ba54a40>
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: s3
+2025-06-15 11:24:21 [DEBUG] Registering S3 region redirector handler
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-06-15 11:24:21 [DEBUG] Registering S3Express Identity Resolver
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: s3
+2025-06-15 11:24:21 [DEBUG] Registering S3 region redirector handler
+2025-06-15 11:24:21 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad84a0>
+2025-06-15 11:24:21 [DEBUG] Setting s3 timeout as (60, 60)
+2025-06-15 11:24:21 [DEBUG] Registering S3Express Identity Resolver
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-06-15 11:24:21 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: s3
+2025-06-15 11:24:21 [DEBUG] Registering S3 region redirector handler
+2025-06-15 11:24:21 [DEBUG] Registering S3Express Identity Resolver
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-06-15 11:24:21 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10badc4a0>
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10ba54a40>
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10ba549a0>
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+2025-06-15 11:24:21 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-06-15 11:24:21 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-06-15 11:24:21 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10ba54a40>
+2025-06-15 11:24:21 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: rekognition
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: rekognition
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-06-15 11:24:21 [DEBUG] Using selector: KqueueSelector
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-06-15 11:24:21 [DEBUG] Using selector: KqueueSelector
+2025-06-15 11:24:21 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-06-15 11:24:21 [DEBUG] No configured endpoint found.
+[2025-06-15 11:24:21 +0900] [40146] [INFO] Started server process [40146]
+2025-06-15 11:24:21 [DEBUG] Setting rekognition timeout as (60, 60)
+[2025-06-15 11:24:21 +0900] [40146] [INFO] Waiting for application startup.
+[2025-06-15 11:24:21 +0900] [40145] [INFO] Started server process [40145]
+[2025-06-15 11:24:21 +0900] [40146] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-06-15 11:24:21 +0900] [40145] [INFO] Waiting for application startup.
+[2025-06-15 11:24:21 +0900] [40146] [INFO] Application startup complete.
+2025-06-15 11:24:21 [DEBUG] Registering retry handlers for service: rekognition
+[2025-06-15 11:24:21 +0900] [40145] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-06-15 11:24:21 +0900] [40145] [INFO] Application startup complete.
+2025-06-15 11:24:21 [DEBUG] Using selector: KqueueSelector
+[2025-06-15 11:24:21 +0900] [40144] [INFO] Started server process [40144]
+[2025-06-15 11:24:21 +0900] [40144] [INFO] Waiting for application startup.
+[2025-06-15 11:24:21 +0900] [40144] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-06-15 11:24:21 +0900] [40144] [INFO] Application startup complete.
+[2025-06-20 09:18:30 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:40144)
+[2025-06-20 09:18:30 +0900] [58107] [ERROR] Worker (pid:40144) was sent SIGABRT!
+[2025-06-20 09:18:30 +0900] [7527] [INFO] Booting worker with pid: 7527
+2025-06-20 09:18:42 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-06-20 09:18:42 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-06-20 09:18:42 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-06-20 09:18:42 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-06-20 09:18:42 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-06-20 09:18:42 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-06-20 09:18:42 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-06-20 09:18:42 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-06-20 09:18:42 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-06-20 09:18:42 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-06-20 09:18:42 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-06-20 09:18:42 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-06-20 09:18:42 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-06-20 09:18:42 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bbd8400>
+2025-06-20 09:18:43 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-06-20 09:18:43 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-06-20 09:18:43 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-06-20 09:18:43 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-06-20 09:18:43 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10bb58c20>
+2025-06-20 09:18:43 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c228220>
+2025-06-20 09:18:43 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10bb589a0>
+2025-06-20 09:18:43 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-06-20 09:18:43 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-06-20 09:18:43 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-06-20 09:18:43 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-06-20 09:18:43 [DEBUG] No configured endpoint found.
+2025-06-20 09:18:45 [DEBUG] Setting s3 timeout as (60, 60)
+2025-06-20 09:18:45 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-06-20 09:18:45 [DEBUG] Registering retry handlers for service: s3
+2025-06-20 09:18:45 [DEBUG] Registering S3 region redirector handler
+2025-06-20 09:18:45 [DEBUG] Registering S3Express Identity Resolver
+2025-06-20 09:18:45 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bbd8400>
+2025-06-20 09:18:45 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-06-20 09:18:45 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-06-20 09:18:45 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10bb589a0>
+2025-06-20 09:18:45 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-06-20 09:18:45 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-06-20 09:18:45 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-06-20 09:18:45 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-06-20 09:18:45 [DEBUG] No configured endpoint found.
+2025-06-20 09:18:45 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-06-20 09:18:45 [DEBUG] Registering retry handlers for service: rekognition
+2025-06-20 09:18:45 [DEBUG] Using selector: KqueueSelector
+[2025-06-20 09:18:45 +0900] [7527] [INFO] Started server process [7527]
+[2025-06-20 09:18:45 +0900] [7527] [INFO] Waiting for application startup.
+[2025-06-20 09:18:45 +0900] [7527] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-06-20 09:18:45 +0900] [7527] [INFO] Application startup complete.
+[2025-07-08 19:45:52 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:58111)
+[2025-07-08 19:45:52 +0900] [58107] [ERROR] Worker (pid:58111) was sent SIGABRT!
+[2025-07-08 19:45:52 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:40145)
+[2025-07-08 19:45:52 +0900] [58107] [CRITICAL] WORKER TIMEOUT (pid:40146)
+[2025-07-08 19:45:52 +0900] [58107] [ERROR] Worker (pid:40146) was sent SIGABRT!
+[2025-07-08 19:45:52 +0900] [58107] [ERROR] Worker (pid:40145) was sent SIGABRT!
+[2025-07-08 19:45:52 +0900] [52032] [INFO] Booting worker with pid: 52032
+[2025-07-08 19:45:52 +0900] [52034] [INFO] Booting worker with pid: 52034
+[2025-07-08 19:45:52 +0900] [52036] [INFO] Booting worker with pid: 52036
+2025-07-08 19:46:01 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-07-08 19:46:01 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-call.apigateway to before-call.api-gateway
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2025-07-08 19:46:01 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-07-08 19:46:01 [DEBUG] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2025-07-08 19:46:01 [DEBUG] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2025-07-08 19:46:01 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-07-08 19:46:01 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/endpoints.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-07-08 19:46:02 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-07-08 19:46:02 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10b9d8400>
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/sdk-default-configuration.json
+2025-07-08 19:46:02 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-07-08 19:46:02 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/partitions.json
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10ba58c20>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10b958c20>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c224220>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c128220>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x10ba58c20>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x10c128220>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10ba589a0>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10b9589a0>
+2025-07-08 19:46:02 [DEBUG] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x10ba589a0>
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: environment_global
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-07-08 19:46:02 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:02 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_service
+2025-07-08 19:46:02 [DEBUG] Looking for endpoint for s3 via: config_global
+2025-07-08 19:46:02 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:10 [DEBUG] Setting s3 timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Setting s3 timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Setting s3 timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/_retry.json
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: s3
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: s3
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: s3
+2025-07-08 19:46:10 [DEBUG] Registering S3 region redirector handler
+2025-07-08 19:46:10 [DEBUG] Registering S3 region redirector handler
+2025-07-08 19:46:10 [DEBUG] Registering S3 region redirector handler
+2025-07-08 19:46:10 [DEBUG] Registering S3Express Identity Resolver
+2025-07-08 19:46:10 [DEBUG] Registering S3Express Identity Resolver
+2025-07-08 19:46:10 [DEBUG] Registering S3Express Identity Resolver
+2025-07-08 19:46:10 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-07-08 19:46:10 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10b9d8400>
+2025-07-08 19:46:10 [DEBUG] Event choose-service-name: calling handler <function handle_service_name_alias at 0x10bad8400>
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/service-2.json.gz
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:10 [DEBUG] Loading JSON file: /Users/shuuregulus7/Desktop/Reactploject/Sproject/venv/lib/python3.11/site-packages/botocore/data/rekognition/2016-06-27/endpoint-rule-set-1.json.gz
+2025-07-08 19:46:10 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10b9589a0>
+2025-07-08 19:46:10 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10ba589a0>
+2025-07-08 19:46:10 [DEBUG] Event creating-client-class.rekognition: calling handler <function add_generate_presigned_url at 0x10ba589a0>
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_service
+2025-07-08 19:46:10 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-07-08 19:46:10 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: environment_global
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_service
+2025-07-08 19:46:10 [DEBUG] Looking for endpoint for rekognition via: config_global
+2025-07-08 19:46:10 [DEBUG] No configured endpoint found.
+2025-07-08 19:46:10 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Setting rekognition timeout as (60, 60)
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: rekognition
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: rekognition
+2025-07-08 19:46:10 [DEBUG] Registering retry handlers for service: rekognition
+2025-07-08 19:46:10 [DEBUG] Using selector: KqueueSelector
+2025-07-08 19:46:10 [DEBUG] Using selector: KqueueSelector
+2025-07-08 19:46:10 [DEBUG] Using selector: KqueueSelector
+[2025-07-08 19:46:10 +0900] [52036] [INFO] Started server process [52036]
+[2025-07-08 19:46:10 +0900] [52032] [INFO] Started server process [52032]
+[2025-07-08 19:46:10 +0900] [52036] [INFO] Waiting for application startup.
+[2025-07-08 19:46:10 +0900] [52032] [INFO] Waiting for application startup.
+[2025-07-08 19:46:10 +0900] [52034] [INFO] Started server process [52034]
+[2025-07-08 19:46:10 +0900] [52034] [INFO] Waiting for application startup.
+[2025-07-08 19:46:10 +0900] [52032] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-07-08 19:46:10 +0900] [52036] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-07-08 19:46:10 +0900] [52034] [INFO] ASGI 'lifespan' protocol appears unsupported.
+[2025-07-08 19:46:10 +0900] [52032] [INFO] Application startup complete.
+[2025-07-08 19:46:10 +0900] [52036] [INFO] Application startup complete.
+[2025-07-08 19:46:10 +0900] [52034] [INFO] Application startup complete.
