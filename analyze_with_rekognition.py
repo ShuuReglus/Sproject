@@ -1,24 +1,34 @@
+import uuid
 import boto3
+import os
 
-# AWS の設定
-AWS_REGION = "ap-northeast-1"  # 必要に応じて変更
-S3_BUCKET = "sproject-app-image-storage"  # 自分の S3 バケット名
-IMAGE_NAME = "your-image.jpg"  # アップロードした画像のファイル名
+AWS_REGION = os.getenv("AWS_REGION")
+S3_BUCKET = os.getenv("S3_BUCKET_NAME")
 
-# Rekognition クライアントを作成
-rekognition = boto3.client("rekognition", region_name=AWS_REGION)
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=AWS_REGION
+)
 
-def analyze_image():
+rekognition = boto3.client(
+    "rekognition",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=AWS_REGION
+)
+
+def upload_to_s3(image_bytes, filename):
+    key = f"uploads/{uuid.uuid4()}_{filename}"
+    s3_client.put_object(Bucket=S3_BUCKET, Key=key, Body=image_bytes)
+    return key
+
+def analyze_image_s3(bucket, key):
     response = rekognition.detect_labels(
-        Image={"S3Object": {"Bucket": S3_BUCKET, "Name": IMAGE_NAME}},
-        MaxLabels=10,  # 最大10個のラベルを取得
-        MinConfidence=70,  # 信頼度70%以上のラベルのみ取得
+        Image={"S3Object": {"Bucket": bucket, "Name": key}},
+        MaxLabels=10,
+        MinConfidence=70
     )
-
-    # 結果を表示
-    print("\n✅ 解析結果:")
-    for label in response["Labels"]:
-        print(f"- {label['Name']} ({label['Confidence']:.2f}%)")
-
-if __name__ == "__main__":
-    analyze_image()
+    labels = [label["Name"] for label in response["Labels"]]
+    return ", ".join(labels)
