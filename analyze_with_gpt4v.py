@@ -10,6 +10,10 @@ import uuid
 import mimetypes
 from datetime import datetime
 
+from flask_cors import CORS
+app = Flask(__name__)
+CORS(app) 
+
 MAX_RETRIES = 3
 RETRY_DELAY = 1  # 秒
 
@@ -105,7 +109,7 @@ def generate_ogiri_comment(rekognition_labels):
     """
     try:
         response = client.chat.completions.create(
-            model="gpt-4",  # 必要に応じて gpt-3.5-turbo などに変更可
+            model="gpt-3.5-turbo",  # 必要に応じて gpt-4 などに変更可
             messages=[
                 {"role": "system", "content": "あなたは大喜利AIです。"},
                 {"role": "user", "content": prompt},

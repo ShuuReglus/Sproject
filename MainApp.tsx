@@ -8,18 +8,24 @@ import {
   ActivityIndicator,
   Alert,
   View,
+  Platform,
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import { StatusBar } from "expo-status-bar";
 import axios from "axios";
-import { uploadImageToS3 } from "./src/awsS3Utils";
+import { uploadImageToS3 } from "@/awsS3Utils";
 
-import PlaceholderImage from "./src/assets/images/background-image.png";
-import CharacterImage from "./src/assets/images/character.png";
-import { Button } from "./src/components/button";
-import { ImageViewer } from "./src/components/image-viewer";
+import PlaceholderImage from "@/assets/images/background-image.png";
+import CharacterImage from "@/assets/images/character.png";
+import { Button } from "@/components/button";
+import { ImageViewer } from "@/components/image-viewer";
+import UploadForm from "@/components/UploadForm"; // Web用コンポーネント
+
+type CommentResponse = {
+  comment: string;
+};
 
 const MainApp: FC = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -32,6 +38,11 @@ const MainApp: FC = () => {
       void requestPermission();
     }
   }, [status]);
+
+  if (Platform.OS === "web") {
+    // Webならアップロードフォームを表示（File APIを使う）
+    return <UploadForm />;
+  }
 
   const pickImageAsync = async () => {
     try {
@@ -61,9 +72,9 @@ const MainApp: FC = () => {
     }
   };
 
-  const generateComment = async (fileName: string) => {
-    const response = await axios.post(
-      "https://0530-2404-7a85-24e1-5000-3534-4ff7-4339-ac36.ngrok-free.app/generate-comment",
+  const generateComment = async (fileName: string): Promise<CommentResponse> => {
+    const response = await axios.post<CommentResponse>(
+      "https://3e2ebad520f4.ngrok-free.app/generate-comment",
       {
         bucket_name: "sproject-app-image-storage",
         object_key: fileName,
@@ -115,7 +126,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    
     alignItems: "center",
   },
   footerContainer: {
@@ -123,12 +133,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   commentContainer: {
-    flexDirection: "column", // 水平方向でなく縦に並べる
-    justifyContent: "flex-start", // 上から配置
-    position: "relative", // absolute から relative に変更
-    alignItems: "center", // 真ん中に配置
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    position: "relative",
+    alignItems: "center",
   },
-  
   character: {
     width: 90,
     height: 90,
@@ -138,11 +147,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     borderRadius: 10,
-    maxHeight: 70, // 最大高さを指定
-    overflow: "hidden", // 超えた分は隠す
+    maxHeight: 70,
+    overflow: "hidden",
   },
-  
-  
   commentText: {
     color: "black",
   },
@@ -150,4 +157,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+
 
