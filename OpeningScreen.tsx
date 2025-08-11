@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 500,
-    height: 500,
+    width: 1250,
+    height: 1250,
     marginBottom: 20,
     resizeMode: "contain",
   },

@@ -5,10 +5,10 @@ export default function App() {
   return <UploadForm />;
 }
 
-const neonBlue = "#00f0ff";
-const neonPink = "#ff00e0";
-const neonPurple = "#9d00ff";
-const neonCyan = "#00fff7";
+const neonGreen = "#00ff90";
+const neonLightGreen = "#a8ffb0";
+const neonDarkGreen = "#007744";
+
 
 const randomRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;
@@ -57,7 +57,7 @@ const Fireworks = ({ side }: { side: "left" | "right" }) => {
             animationDuration: `${randomRange(1, 2.5)}s`,
             left: `${randomRange(0, 100)}%`,
             backgroundColor:
-              i % 3 === 0 ? neonPink : i % 3 === 1 ? neonBlue : neonPurple,
+              i % 3 === 0 ? neonGreen : i % 3 === 1 ? neonLightGreen : neonDarkGreen,
             width: `${randomRange(4, 8)}px`,
             height: `${randomRange(4, 8)}px`,
             borderRadius: "50%",
@@ -144,72 +144,76 @@ const UploadForm = () => {
   }, [image]);
 
   // canvasで3Dネオン波を描く処理（初回のみ）
-  useEffect(() => {
-    const canvas = document.getElementById(
-      "neon-wave-bg"
-    ) as HTMLCanvasElement | null;
-    if (!canvas) return;
+  const neonGreen = "#00ff90";
+const neonLightGreen = "#a8ffb0";
+const neonDarkGreen = "#007744";
 
-    const ctx = canvas.getContext("2d");
+useEffect(() => {
+  const canvas = document.getElementById("neon-wave-bg") as HTMLCanvasElement | null;
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  let animationId: number;
+  const width = (canvas.width = window.innerWidth);
+  const height = (canvas.height = window.innerHeight);
+
+  const linesCount = 5;
+  const lines: {
+    y: number;
+    phase: number;
+    speed: number;
+    amplitude: number;
+  }[] = [];
+
+  for (let i = 0; i < linesCount; i++) {
+    lines.push({
+      y: (height / (linesCount + 1)) * (i + 1),
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.008 + Math.random() * 0.005,  // ゆっくり目に調整
+      amplitude: 15 + Math.random() * 15,    // 少し控えめの波の高さ
+    });
+  }
+
+  const draw = () => {
     if (!ctx) return;
 
-    let animationId: number;
-    const width = (canvas.width = window.innerWidth);
-    const height = (canvas.height = window.innerHeight);
+    ctx.clearRect(0, 0, width, height);
 
-    const linesCount = 5;
-    const lines: {
-      y: number;
-      phase: number;
-      speed: number;
-      amplitude: number;
-    }[] = [];
+    lines.forEach(({ y, phase, speed, amplitude }) => {
+      ctx.beginPath();
+      ctx.lineWidth = 3;
 
-    for (let i = 0; i < linesCount; i++) {
-      lines.push({
-        y: (height / (linesCount + 1)) * (i + 1),
-        phase: Math.random() * Math.PI * 2,
-        speed: 0.02 + Math.random() * 0.02,
-        amplitude: 20 + Math.random() * 20,
-      });
-    }
+      const gradient = ctx.createLinearGradient(0, y - amplitude, 0, y + amplitude);
+      gradient.addColorStop(0, neonLightGreen);
+      gradient.addColorStop(0.5, neonGreen);
+      gradient.addColorStop(1, neonDarkGreen);
+      ctx.strokeStyle = gradient;
 
-    const draw = () => {
-      if (!ctx) return;
+      const segments = 100;
+      for (let i = 0; i <= segments; i++) {
+        const x = (width / segments) * i;
+        const waveY = y + Math.sin(phase + (i / segments) * Math.PI * 4) * amplitude;
+        if (i === 0) ctx.moveTo(x, waveY);
+        else ctx.lineTo(x, waveY);
+      }
+      ctx.stroke();
 
-      ctx.clearRect(0, 0, width, height);
+      // フェーズ更新
+      lines.forEach((line) => (line.phase += line.speed));
+    });
 
-      lines.forEach(({ y, phase, amplitude }) => {
-        ctx.beginPath();
-        ctx.lineWidth = 3;
-        const gradient = ctx.createLinearGradient(0, y - amplitude, 0, y + amplitude);
-        gradient.addColorStop(0, neonPink);
-        gradient.addColorStop(0.5, neonBlue);
-        gradient.addColorStop(1, neonCyan);
-        ctx.strokeStyle = gradient;
+    animationId = requestAnimationFrame(draw);
+  };
 
-        const segments = 100;
-        for (let i = 0; i <= segments; i++) {
-          const x = (width / segments) * i;
-          const waveY = y + Math.sin(phase + (i / segments) * Math.PI * 4) * amplitude;
-          if (i === 0) ctx.moveTo(x, waveY);
-          else ctx.lineTo(x, waveY);
-        }
-        ctx.stroke();
+  draw();
 
-        // フェーズ更新
-        lines.forEach((line) => (line.phase += line.speed));
-      });
+  return () => {
+    cancelAnimationFrame(animationId);
+  };
+}, []);
 
-      animationId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
 
   return (
   <>
@@ -232,7 +236,7 @@ const UploadForm = () => {
         alignItems: "center",
         padding: "2rem",
         fontFamily: "'Orbitron', sans-serif",
-        color: neonBlue,
+        color: neonLightGreen,
         position: "relative",
         overflow: "visible",
         zIndex: 10,
@@ -247,12 +251,12 @@ const UploadForm = () => {
         style={{
           fontSize: "3.5rem",
           textShadow: `
-            0 0 10px ${neonPink},
-            0 0 20px ${neonPink},
-            0 0 30px ${neonBlue},
-            0 0 40px ${neonPurple},
-            0 0 70px ${neonPurple},
-            0 0 80px ${neonPink}`,
+            0 0 10px ${neonGreen},
+            0 0 20px ${neonGreen},
+            0 0 30px ${neonLightGreen},
+            0 0 40px ${neonDarkGreen},
+            0 0 70px ${neonDarkGreen},
+            0 0 80px ${neonGreen}`,
           marginBottom: "2rem",
         }}
       >
@@ -266,7 +270,7 @@ const UploadForm = () => {
         style={{
           padding: "1rem 2rem",
           borderRadius: "20px",
-          border: `3px solid ${neonPink}`,
+          border: `3px solid ${neonGreen}`,
           background:
             "linear-gradient(45deg, rgba(255,0,224,0.5), rgba(0,255,255,0.5))",
           color: "#fff",
@@ -274,9 +278,9 @@ const UploadForm = () => {
           fontSize: "1.2rem",
           cursor: "pointer",
           boxShadow: `
-            0 0 15px ${neonPink},
-            0 0 40px ${neonBlue},
-            0 0 60px ${neonPurple}`,
+            0 0 15px ${neonGreen},
+            0 0 40px ${neonLightGreen},
+            0 0 60px ${neonDarkGreen}`,
           marginBottom: "2rem",
           transition: "all 0.3s ease",
           userSelect: "none",
@@ -284,15 +288,15 @@ const UploadForm = () => {
         }}
         onMouseEnter={(e) =>
           (e.currentTarget.style.boxShadow = `
-            0 0 30px ${neonPink},
-            0 0 70px ${neonBlue},
-            0 0 90px ${neonPurple}`)
+            0 0 30px ${neonGreen},
+            0 0 70px ${neonLightGreen},
+            0 0 90px ${neonDarkGreen}`)
         }
         onMouseLeave={(e) =>
           (e.currentTarget.style.boxShadow = `
-            0 0 15px ${neonPink},
-            0 0 40px ${neonBlue},
-            0 0 60px ${neonPurple}`)
+            0 0 15px ${neonGreen},
+            0 0 40px ${neonLightGreen},
+            0 0 60px ${neonDarkGreen}`)
         }
       />
 
@@ -304,8 +308,8 @@ const UploadForm = () => {
             maxWidth: "300px",
             maxHeight: "300px",
             borderRadius: "20px",
-            border: `4px solid ${neonBlue}`,
-            boxShadow: `0 0 20px ${neonBlue}, 0 0 30px ${neonPink}`,
+            border: `4px solid ${neonLightGreen}`,
+            boxShadow: `0 0 20px ${neonLightGreen}, 0 0 30px ${neonGreen}`,
             marginBottom: "1.5rem",
             zIndex: 1,
             filter: isUploading ? "blur(2px)" : "none",
@@ -318,10 +322,10 @@ const UploadForm = () => {
       {isUploading && (
         <p
           style={{
-            color: neonPink,
+            color: neonGreen,
             fontSize: "1.4rem",
             fontWeight: "bold",
-            textShadow: `0 0 8px ${neonPink}`,
+            textShadow: `0 0 8px ${neonGreen}`,
             marginBottom: "1.5rem",
             zIndex: 1,
           }}
@@ -340,7 +344,7 @@ const UploadForm = () => {
             maxWidth: "350px",
             color: "#fff",
             fontSize: "1.3rem",
-            boxShadow: `0 0 20px ${neonPink}, 0 0 40px ${neonBlue}`,
+            boxShadow: `0 0 20px ${neonGreen}, 0 0 40px ${neonLightGreen}`,
             zIndex: 1,
             whiteSpace: "pre-wrap",
             textAlign: "center",
@@ -376,21 +380,21 @@ const UploadForm = () => {
       @keyframes neonTextGlow {
         0% {
           text-shadow:
-            0 0 5px ${neonPink},
-            0 0 10px ${neonPink},
-            0 0 20px ${neonBlue},
-            0 0 30px ${neonPurple},
-            0 0 40px ${neonPurple},
-            0 0 50px ${neonPink};
+            0 0 5px ${neonGreen},
+            0 0 10px ${neonGreen},
+            0 0 20px ${neonLightGreen},
+            0 0 30px ${neonDarkGreen},
+            0 0 40px ${neonDarkGreen},
+            0 0 50px ${neonGreen};
         }
         100% {
           text-shadow:
-            0 0 20px ${neonPink},
-            0 0 30px ${neonPink},
-            0 0 40px ${neonBlue},
-            0 0 50px ${neonPurple},
-            0 0 60px ${neonPurple},
-            0 0 70px ${neonPink};
+            0 0 20px ${neonGreen},
+            0 0 30px ${neonGreen},
+            0 0 40px ${neonLightGreen},
+            0 0 50px ${neonDarkGreen},
+            0 0 60px ${neonDarkGreen},
+            0 0 70px ${neonGreen};
         }
       }
     `}</style>
