@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+
 export default function App() {
   return <UploadForm />;
 }
@@ -91,10 +92,14 @@ const Fireworks = ({ side }: { side: "left" | "right" }) => {
 };
 
 const UploadForm = () => {
+  const [isSystemOpen, setIsSystemOpen] = useState(false);
+
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [comment, setComment] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -358,38 +363,22 @@ const UploadForm = () => {
 
         {/* ここにSystemボタンを配置 */}
         <button
-          onClick={() => alert("System設定ボタン押されました")}
-          style={{
-            padding: "0.6rem 1.2rem",
-            fontSize: "1rem",
-            borderRadius: "12px",
-            border: `2px solid ${neonGreen}`,
-            backgroundColor: "rgba(0, 255, 144, 0.1)",
-            color: neonGreen,
-            cursor: "pointer",
-            userSelect: "none",
-            boxShadow: `
-              0 0 6px ${neonGreen},
-              0 0 12px ${neonLightGreen}`,
-            transition: "all 0.3s ease",
-            alignSelf: "center",
-            marginBottom: "2rem",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "rgba(0, 255, 144, 0.3)";
-            e.currentTarget.style.boxShadow = `
-              0 0 12px ${neonGreen},
-              0 0 20px ${neonLightGreen}`;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "rgba(0, 255, 144, 0.1)";
-            e.currentTarget.style.boxShadow = `
-              0 0 6px ${neonGreen},
-              0 0 12px ${neonLightGreen}`;
-          }}
-        >
-          System ⚙️
-        </button>
+  onClick={() => setIsSystemOpen(true)}
+  style={{
+    padding: "0.6rem 1.2rem",
+    fontSize: "1rem",
+    borderRadius: "12px",
+    border: `2px solid ${neonGreen}`,
+    backgroundColor: "rgba(0, 255, 144, 0.1)",
+    color: neonGreen,
+    cursor: "pointer",
+    boxShadow: `0 0 6px ${neonGreen}, 0 0 12px ${neonLightGreen}`,
+    marginTop: "2rem",
+  }}
+>
+  System ⚙️
+</button>
+
       </div>
 
       {/* keyframe animations */}
@@ -423,6 +412,94 @@ const UploadForm = () => {
           display: none;
         }
       `}</style>
+      {isSystemOpen && (
+  
+    
+      
+      <div
+    style={{
+      position: "fixed",
+      top: 0, left: 0, width: "100vw", height: "100vh",
+      backgroundColor: "rgba(0,0,0,0.7)",
+      display: "flex", justifyContent: "center", alignItems: "center",
+      zIndex: 1000,
+    }}
+    onClick={() => setIsSystemOpen(false)}
+  >
+    <div
+      style={{
+        background: "linear-gradient(135deg, rgba(255,0,224,0.9), rgba(0,255,255,0.9))",
+        padding: "2rem",
+        borderRadius: "20px",
+        color: "#fff",
+        fontFamily: "'Orbitron', sans-serif",
+        maxWidth: "400px",
+        boxShadow: `0 0 20px ${neonGreen}, 0 0 40px ${neonLightGreen}`,
+        textAlign: "center",
+        position: "relative",
+      }}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <h2 style={{ marginBottom: "1.5rem" }}>System設定</h2>
+
+      {/* ログインボタン */}
+      <button
+        onClick={() => alert("ログイン画面へ")}
+        style={{
+          display: "block",
+          width: "100%",
+          padding: "0.8rem",
+          marginBottom: "1rem",
+          borderRadius: "10px",
+          border: `2px solid ${neonGreen}`,
+          backgroundColor: "transparent",
+          color: neonGreen,
+          fontSize: "1.1rem",
+          cursor: "pointer",
+          boxShadow: `0 0 6px ${neonGreen}, 0 0 12px ${neonLightGreen}`,
+        }}
+      >
+        ログイン
+      </button>
+
+      {/* 登録ボタン */}
+      <button
+        onClick={() => alert("登録画面へ")}
+        style={{
+          display: "block",
+          width: "100%",
+          padding: "0.8rem",
+          marginBottom: "1.5rem",
+          borderRadius: "10px",
+          border: `2px solid ${neonLightGreen}`,
+          backgroundColor: "transparent",
+          color: neonLightGreen,
+          fontSize: "1.1rem",
+          cursor: "pointer",
+          boxShadow: `0 0 6px ${neonLightGreen}, 0 0 12px ${neonGreen}`,
+        }}
+      >
+        登録
+      </button>
+      <button
+        onClick={() => setIsSystemOpen(false)}
+        style={{
+          marginTop: "1rem",
+          padding: "0.5rem 1rem",
+          border: `2px solid ${neonGreen}`,
+          backgroundColor: "transparent",
+          color: neonGreen,
+          borderRadius: "10px",
+          cursor: "pointer",
+          boxShadow: `0 0 6px ${neonGreen}, 0 0 12px ${neonLightGreen}`,
+        }}
+      >
+        閉じる
+      </button>
+    </div>
+  </div>
+)}
+
     </>
   );
 };
