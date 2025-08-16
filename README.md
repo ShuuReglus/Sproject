@@ -1,21 +1,17 @@
-名言コメントメーカー
-概要
-アップロードした画像から AI が即興で「写真で一言」風コメントを生成する Web / モバイル対応アプリ。
-AWS Rekognition で画像解析 → OpenAI API でコメント生成 → フロントに返却します。
+📸 名言コメントメーカー
+AI がアップロード画像を解析して「写真で一言」風コメントを生成する Web / モバイル対応アプリ。
 
-アーキテクチャ
-ユーザーが画像をアップロード
-
-サーバーが S3 に保存
-
-AWS Rekognition でラベル解析
-
-解析結果を元に OpenAI (GPT) でコメント生成
-
-結果をフロントに返却
-
-技術スタック
-バックエンド: Python, Flask, boto3, OpenAI API
+🏗️ アーキテクチャ
+mermaid
+コピーする
+編集する
+flowchart TD
+    U[🧑 ユーザー<br>画像アップロード] --> S[💾 サーバー<br>S3に保存]
+    S --> R[🔍 AWS Rekognition<br>画像解析]
+    R --> O[🤖 OpenAI API<br>コメント生成]
+    O --> C[💬 一言風コメントを返却]
+⚙️ 技術スタック
+バックエンド: Python / Flask / boto3 / OpenAI API
 
 フロントエンド(Web): React + TypeScript
 
@@ -25,8 +21,8 @@ AWS Rekognition でラベル解析
 
 その他: dotenv, flask-cors
 
-セットアップ手順
-1. バックエンド
+🚀 セットアップ
+🔧 バックエンド
 bash
 コピーする
 編集する
@@ -36,9 +32,9 @@ python -m venv venv
 source venv/bin/activate
 pip install flask boto3 openai flask-cors python-dotenv
 python analyze_with_gpt4v.py
-.env に以下を設定
+.env に以下を設定：
 
-ini
+env
 コピーする
 編集する
 OPENAI_API_KEY=sk-...
@@ -46,89 +42,40 @@ AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_REGION=ap-northeast-1
 S3_BUCKET_NAME=your-bucket-name
-サーバー起動
+🐱 デモフロー
+画像をアップロード
 
-bash
-コピーする
-編集する
-python analyze_with_gpt4v.py
-2. フロントエンド(Web)
-bash
-コピーする
-編集する
-cd web
-npm install
-npm start
-APIエンドポイントは .env またはコード内で http://localhost:5003 を指定。
+数秒後に AI がコメントを生成
 
-API エンドポイント
-POST /generate-comment
+結果を画面に表示 🎉
 
-Content-Type: multipart/form-data
+✨ 工夫ポイント
+Web / Expo 両対応のアップロード処理
 
-フィールド: image (画像ファイル)
+S3 のキー名を「日付+UUID」で衝突防止
 
-レスポンス例
+OpenAI SDK のレスポンス変化に対応
 
-json
-コピーする
-編集する
-{
-  "comment": "このネコ、会議中もずっと寝てる。"
-}
-IAM ポリシー例
-json
-コピーする
-編集する
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["s3:PutObject"],
-      "Resource": "arn:aws:s3:::your-bucket/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": ["rekognition:DetectLabels"],
-      "Resource": "*"
-    }
-  ]
-}
-工夫したポイント
-CORS や multipart/form-data の安定対応：Web/Expo 両対応
+CORS / multipart の安定対応
 
-S3 キー名に日付+UUID付与：衝突防止
+💡 今後の改善案
+多言語対応 🌍
 
-OpenAI レスポンスの構造変化対応：SDKバージョン差異を吸収
+コメントのテンション切り替え（真面目/おふざけ）
 
-Expo Web/Native 両対応：環境別にアップロード処理を分岐
+コメントを画像にオーバーレイ 🖼️
 
-デモフロー
-画像を選択してアップロード
+😵 苦労したことと決断
+デプロイには何度も挑戦しましたが、環境依存やCORSなどでかなり時間を費やしました。
+最終的に「無理に中途半端なデプロイをせず、ローカル動作とREADME＋図解で説明する」
+という判断をしました。
 
-数秒後にコメントが生成されて画面に表示
+この経験から、
 
-再アップロードで別のコメントが楽しめる
+技術的な粘り強さ
 
-システム分岐フロー図
+状況に応じた意思決定の重要性
+を学んでいます。
 
-今後の改善案
-複数言語対応（解析と生成を言語別に）
 
-コメントテンションのカスタマイズ（真面目/おふざけ）
-
-生成コメントを画像上にオーバーレイ
-
-面接用補足
-デプロイも検討しましたが、ngrok や Expo Web での一時公開は
-
-利用期限が短い
-
-セキュリティ面でリスク
-
-本番環境と挙動差異が出やすい
-
-といった理由で断念。
-最終的には README + 図解 + 口頭説明 の形で面接に臨むことにしました。
 
