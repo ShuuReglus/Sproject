@@ -1,93 +1,85 @@
-
-# 名言コメントメーカー
-
-## 概要
-アップロードした画像から AI が即興で「写真で一言」風コメントを生成する Web / モバイル対応アプリ。  
+名言コメントメーカー
+概要
+アップロードした画像から AI が即興で「写真で一言」風コメントを生成する Web / モバイル対応アプリ。
 AWS Rekognition で画像解析 → OpenAI API でコメント生成 → フロントに返却します。
 
----
+アーキテクチャ
+ユーザーが画像をアップロード
 
-## アーキテクチャ
-1. ユーザーが画像をアップロード
-2. サーバーが S3 に保存
-3. AWS Rekognition でラベル解析
-4. 解析結果を元に OpenAI (GPT) でコメント生成
-5. 結果をフロントに返却
+サーバーが S3 に保存
 
----
+AWS Rekognition でラベル解析
 
-## 技術スタック
-- **バックエンド**: Python, Flask(大量アクセスはないと見込んでgunicorn や uvicornは未使用), boto3, OpenAI API
-- **フロントエンド(Web)**: React + TypeScript
-- **フロントエンド(Mobile)**: React Native (Expo)
-- **インフラ**: AWS S3, AWS Rekognition
-- **その他**: dotenv, flask-cors
+解析結果を元に OpenAI (GPT) でコメント生成
 
----
+結果をフロントに返却
 
-## セットアップ手順
+技術スタック
+バックエンド: Python, Flask, boto3, OpenAI API
 
-### 1. バックエンド
-```bash
+フロントエンド(Web): React + TypeScript
+
+フロントエンド(Mobile): React Native (Expo)
+
+インフラ: AWS S3, AWS Rekognition
+
+その他: dotenv, flask-cors
+
+セットアップ手順
+1. バックエンド
+bash
+コピーする
+編集する
 git clone <this-repo>
 cd backend
 python -m venv venv
 source venv/bin/activate
 pip install flask boto3 openai flask-cors python-dotenv
 python analyze_with_gpt4v.py
+.env に以下を設定
 
-````
-
-`.env` に以下を設定
-
-```
+ini
+コピーする
+編集する
 OPENAI_API_KEY=sk-...
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_REGION=ap-northeast-1
 S3_BUCKET_NAME=your-bucket-name
-```
-
 サーバー起動
 
-```bash
+bash
+コピーする
+編集する
 python analyze_with_gpt4v.py
-```
-
----
-
-### 2. フロントエンド(Web)
-
-```bash
+2. フロントエンド(Web)
+bash
+コピーする
+編集する
 cd web
 npm install
 npm start
-```
+APIエンドポイントは .env またはコード内で http://localhost:5003 を指定。
 
-APIエンドポイントは `.env` またはコード内で `http://localhost:5003` を指定。
+API エンドポイント
+POST /generate-comment
 
----
+Content-Type: multipart/form-data
 
-## API エンドポイント
+フィールド: image (画像ファイル)
 
-**POST** `/generate-comment`
+レスポンス例
 
-* Content-Type: `multipart/form-data`
-* フィールド: `image` (画像ファイル)
-
-**レスポンス例**
-
-```json
+json
+コピーする
+編集する
 {
   "comment": "このネコ、会議中もずっと寝てる。"
 }
-```
-
----
-
-## IAM ポリシー例
-
-```json
+IAM ポリシー例
+json
+コピーする
+編集する
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -103,36 +95,40 @@ APIエンドポイントは `.env` またはコード内で `http://localhost:50
     }
   ]
 }
-```
+工夫したポイント
+CORS や multipart/form-data の安定対応：Web/Expo 両対応
 
----
+S3 キー名に日付+UUID付与：衝突防止
 
-## 工夫したポイント
+OpenAI レスポンスの構造変化対応：SDKバージョン差異を吸収
 
-* **CORS や multipart/form-data の安定対応**：Web/Expo 両対応コード
-* **S3 キー名に日付+UUID付与**：衝突防止
-* **OpenAI レスポンスの構造変化対応**：SDKバージョン差異を吸収
-* **Expo Web/Native 両対応**：環境別にアップロード処理を分岐
+Expo Web/Native 両対応：環境別にアップロード処理を分岐
 
----
+デモフロー
+画像を選択してアップロード
 
-## デモフロー
+数秒後にコメントが生成されて画面に表示
 
-1. 画像を選択してアップロード
-2. 数秒後にコメントが生成されて画面に表示
-3. 再アップロードで別のコメントが楽しめる
+再アップロードで別のコメントが楽しめる
 
----
+システム分岐フロー図
 
-## 今後の改善案
+今後の改善案
+複数言語対応（解析と生成を言語別に）
 
-* 複数言語対応（解析と生成を言語別に）
-* コメントテンションのカスタマイズ（真面目/おふざけ）
-* 生成コメントを画像上にオーバーレイ
+コメントテンションのカスタマイズ（真面目/おふざけ）
 
----
+生成コメントを画像上にオーバーレイ
 
-```
+面接用補足
+デプロイも検討しましたが、ngrok や Expo Web での一時公開は
 
----
-```
+利用期限が短い
+
+セキュリティ面でリスク
+
+本番環境と挙動差異が出やすい
+
+といった理由で断念。
+最終的には README + 図解 + 口頭説明 の形で面接に臨むことにしました。
+
