@@ -37,13 +37,14 @@ python analyze_with_gpt4v.py
 
 `.env` に以下を設定：
 
-env
+```env
 
 OPENAI_API_KEY=sk-...
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_REGION=ap-northeast-1
 S3_BUCKET_NAME=your-bucket-name
+```
 🐱 デモフロー
 画像をアップロード
 
