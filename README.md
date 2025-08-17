@@ -1,6 +1,8 @@
 # 📸 名言コメントガチャアプリ
 AI がアップロード画像を解析して「写真で一言」風コメントを生成する Web アプリ。
 
+![アプリトップ画面](images/top_screenshot.png)
+
 ---
 
 ## 🏗️ アーキテクチャ
@@ -46,6 +48,10 @@ S3_BUCKET_NAME=your-bucket-name
 数秒後に AI がコメントを生成
 
 結果を画面に表示 🎉
+
+![手順画面](images/tezyunn_screenshot.png)
+![選択画面](images/senntaku_screenshot.png)
+![結果画面](images/kekka_screenshot.png)
 
 ✨ 工夫ポイント
 React Native→Web版対応への変更
