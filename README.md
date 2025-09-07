@@ -5,13 +5,16 @@ AI がアップロード画像を解析して「写真で一言」風コメン�
 
 ---
 
-## 🏗️ アーキテクチャ
+## フローチャート
 ```mermaid
-flowchart TD
-    U[🧑 ユーザー<br>画像アップロード] --> S[💾 サーバー<br>S3に保存]
-    S --> R[🔍 AWS Rekognition<br>画像解析]
-    R --> O[🤖 OpenAI API<br>コメント生成]
-    O --> C[💬 一言風コメントを返却]
+画像をアップロード
+
+数秒後に AI がコメントを生成
+
+結果を画面に表示 🎉
+
+![手順画面](images/tezyunn_screenshot.png)
+
 ```
 ⚙️ 技術スタック
 バックエンド: Python / Flask / boto3 / OpenAI API
@@ -45,14 +48,8 @@ AWS_SECRET_ACCESS_KEY=...
 AWS_REGION=ap-northeast-1
 S3_BUCKET_NAME=your-bucket-name
 ```
-🐱 デモフロー
-画像をアップロード
+🐱 アプリ画面一覧
 
-数秒後に AI がコメントを生成
-
-結果を画面に表示 🎉
-
-![手順画面](images/tezyunn_screenshot.png)
 ![選択画面](images/senntaku_screenshot.png)
 ![結果画面](images/kekka_screenshot.png)
 
@@ -77,8 +74,8 @@ CORS / multipart の安定対応
 👥 いいね機能などでユーザー同士の交流
 
 😵 苦労したことと決断
-デプロイには何度も挑戦しましたが、環境依存や CORS などで多くの時間を費やしました。
-最終的に 「無理に中途半端なデプロイをせず、ローカル動作と README＋図解で説明する」 という判断をしました。
+デプロイには何度も挑戦しましたが、環境依存や CORS などで多くの時間を費やしましたしかし
+最終的に 「時間をかけて無理に中途半端なデプロイをせず、ローカル動作と README＋図解で説明する」 という判断をしました。
 まず他のアプリを作り時間がある時再度デプロイチャレンジします（システムを移動して作り直すかもしれませんが。）
 
 この経験から学んだこと：
