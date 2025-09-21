@@ -1,7 +1,7 @@
 # 名言コメントガチャアプリ
 AI がアップロード画像を解析して「写真で一言」風コメントを生成する Web アプリ。
 
-![アプリトップ画面](images/top_screenshot.png)
+![アプリトップ画面](images/top_screenshot1.png)
 
 ---
 
@@ -13,7 +13,7 @@ AI がアップロード画像を解析して「写真で一言」風コメン�
 
 結果を画面に表示 
 
-![手順画面](images/tezyunn_screenshot.png)
+![手順画面](images/tezyunn_screenshot1.png)
 
 
 技術スタック
@@ -50,8 +50,8 @@ S3_BUCKET_NAME=your-bucket-name
 ```
 アプリ画面一覧
 
-![選択画面](images/senntaku_screenshot.png)
-![結果画面](images/kekka_screenshot.png)
+![選択画面](images/senntaku_screenshot1.png)
+![結果画面](images/kekka_screenshot1.png)
 
 工夫ポイント
 React Native→Web版対応への変更
