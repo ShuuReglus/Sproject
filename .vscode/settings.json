@@ -30,5 +30,6 @@
   ],
   "tailwindCSS.experimental.configFile": "tailwind.config.ts",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "kiroAgent.configureMCP": "Disabled"
 }

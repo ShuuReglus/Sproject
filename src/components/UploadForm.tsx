@@ -1,95 +1,38 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 
 export default function App() {
   return <UploadForm />;
 }
 
-const neonGreen = "#00ff90";
-const neonLightGreen = "#a8ffb0";
-const neonDarkGreen = "#007744";
+// 落ち着いたカラーパレット
+const primaryColor = "#4f46e5"; // インディゴ
+const secondaryColor = "#6366f1"; // ライトインディゴ
+const accentColor = "#8b5cf6"; // パープル
+const textColor = "#1f2937"; // ダークグレー
+const lightGray = "#f3f4f6";
+const mediumGray = "#9ca3af";
 
 const randomRange = (min: number, max: number) =>
   Math.random() * (max - min) + min;
 
-// 3Dネオン波アニメーション背景
-const NeonWaveBackground = () => (
-  <canvas
-    id="neon-wave-bg"
+// シンプルな背景グラデーション
+const SimpleBackground = () => (
+  <div
     style={{
       position: "fixed",
       top: 0,
       left: 0,
       width: "100vw",
       height: "100vh",
+      background: `linear-gradient(135deg, 
+        ${lightGray} 0%, 
+        #ffffff  50%, 
+        ${lightGray} 100%)`,
       zIndex: 0,
       pointerEvents: "none",
-      filter: "drop-shadow(0 0 6px #00f0ffaa) drop-shadow(0 0 15px #ff00e0aa)",
     }}
   />
 );
-
-// 花火＆光の粒コンポーネント
-const Fireworks = ({ side }: { side: "left" | "right" }) => {
-  const particlesCount = 20;
-  const particles = Array.from({ length: particlesCount });
-
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        bottom: 0,
-        width: "20vw",
-        pointerEvents: "none",
-        [side]: 0,
-        overflow: "visible",
-        zIndex: 0,
-      }}
-    >
-      {particles.map((_, i) => (
-        <div
-          key={i}
-          className="firework-particle"
-          style={{
-            animationDelay: `${randomRange(0, 2)}s`,
-            animationDuration: `${randomRange(1, 2.5)}s`,
-            left: `${randomRange(0, 100)}%`,
-            backgroundColor:
-              i % 3 === 0 ? neonGreen : i % 3 === 1 ? neonLightGreen : neonDarkGreen,
-            width: `${randomRange(4, 8)}px`,
-            height: `${randomRange(4, 8)}px`,
-            borderRadius: "50%",
-            position: "absolute",
-            bottom: 0,
-            opacity: 0,
-          }}
-        />
-      ))}
-      <style>{`
-        .firework-particle {
-          animation-name: firework-burst;
-          animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
-          animation-iteration-count: infinite;
-        }
-        @keyframes firework-burst {
-          0% {
-            opacity: 0;
-            transform: translateY(0) scale(1);
-          }
-          10% {
-            opacity: 1;
-            transform: translateY(-60px) scale(1.4);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-180px) scale(0);
-          }
-        }
-      `}</style>
-    </div>
-  );
-};
 
 const UploadForm = () => {
   const [isSystemOpen, setIsSystemOpen] = useState(false);
@@ -98,8 +41,7 @@ const UploadForm = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [comment, setComment] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  
-
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -111,6 +53,28 @@ const UploadForm = () => {
       setImage(null);
       setPreviewUrl(null);
     }
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const file = e.dataTransfer.files[0];
+    if (file?.type.startsWith("image/")) {
+      setImage(file);
+      setComment(null);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
   };
 
   const uploadImageAndGetComment = async (file: File) => {
@@ -141,296 +105,327 @@ const UploadForm = () => {
   };
 
   useEffect(() => {
-    
     if (image) {
       void uploadImageAndGetComment(image);
     }
   }, [image]);
 
-  // canvasで3Dネオン波を描く処理（初回のみ）
-  useEffect(() => {
-  const canvas = document.getElementById("neon-wave-bg") as HTMLCanvasElement | null;
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  let animationId: number;
-
-  const resizeCanvas = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  };
-  resizeCanvas();
-
-  const linesCount = 5;
-  const lines: {
-    y: number;
-    phase: number;
-    speed: number;
-    amplitude: number;
-  }[] = [];
-
-  for (let i = 0; i < linesCount; i++) {
-    lines.push({
-      y: (canvas.height / (linesCount + 1)) * (i + 1),
-      phase: Math.random() * Math.PI * 2,
-      speed: 0.008 + Math.random() * 0.005,
-      amplitude: 15 + Math.random() * 15,
-    });
-  }
-
-  const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    lines.forEach(({ y, phase, speed, amplitude }) => {
-      ctx.beginPath();
-      ctx.lineWidth = 3;
-
-      const gradient = ctx.createLinearGradient(0, y - amplitude, 0, y + amplitude);
-      gradient.addColorStop(0, neonLightGreen);
-      gradient.addColorStop(0.5, neonGreen);
-      gradient.addColorStop(1, neonDarkGreen);
-      ctx.strokeStyle = gradient;
-
-      const segments = 100;
-      for (let i = 0; i <= segments; i++) {
-        const x = (canvas.width / segments) * i;
-        const waveY = y + Math.sin(phase + (i / segments) * Math.PI * 4) * amplitude;
-        if (i === 0) ctx.moveTo(x, waveY);
-        else ctx.lineTo(x, waveY);
-      }
-      ctx.stroke();
-
-      // フェーズ更新
-      lines.forEach((line) => (line.phase += line.speed));
-    });
-
-    animationId = requestAnimationFrame(draw);
-  };
-
-  draw();
-
-  window.addEventListener("resize", resizeCanvas);
-
-  return () => {
-    cancelAnimationFrame(animationId);
-    window.removeEventListener("resize", resizeCanvas);
-  };
-}, []);
-
+  // 背景アニメーションは削除してシンプルに
 
   return (
     <>
       {/* Google Fonts */}
       <link
-        href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
       />
 
-      <NeonWaveBackground />
-      <Fireworks side="left" />
-      <Fireworks side="right" />
+      <SimpleBackground />
 
       <div
         style={{
           minHeight: "100vh",
-          maxWidth: "720px",
+          maxWidth: "600px",
           margin: "0 auto",
-          padding: "2rem",
-          fontFamily: "'Orbitron', sans-serif",
-          color: neonLightGreen,
-          userSelect: "none",
+          padding: "3rem 2rem",
+          fontFamily: "'Inter', sans-serif",
+          color: textColor,
           textAlign: "center",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          overflowY: "auto",  // ここで縦スクロール許可
+          overflowY: "auto",
           position: "relative",
           zIndex: 10,
           boxSizing: "border-box",
         }}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
       >
         <h1
           style={{
-            fontSize: "3.5rem",
-            textShadow: `
-              0 0 10px ${neonGreen},
-              0 0 20px ${neonGreen},
-              0 0 30px ${neonLightGreen},
-              0 0 40px ${neonDarkGreen},
-              0 0 70px ${neonDarkGreen},
-              0 0 80px ${neonGreen}`,
-            marginBottom: "2rem",
+            fontSize: "2.5rem",
+            fontWeight: "700",
+            color: primaryColor,
+            marginBottom: "0.5rem",
+            letterSpacing: "-0.025em",
           }}
         >
           名言コメントメーカー
         </h1>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
+        <p
           style={{
-            padding: "1rem 2rem",
-            borderRadius: "20px",
-            border: `3px solid ${neonGreen}`,
-            background:
-              "linear-gradient(45deg, rgba(255,0,224,0.5), rgba(0,255,255,0.5))",
-            color: "#fff",
-            fontWeight: "900",
-            fontSize: "1.2rem",
-            cursor: "pointer",
-            boxShadow: `
-              0 0 15px ${neonGreen},
-              0 0 40px ${neonLightGreen},
-              0 0 60px ${neonDarkGreen}`,
-            marginBottom: "2rem",
-            transition: "all 0.3s ease",
-            userSelect: "none",
-            textShadow: "0 0 5px #000",
+            fontSize: "1.1rem",
+            color: mediumGray,
+            marginBottom: "3rem",
+            fontWeight: "400",
           }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.boxShadow = `
-              0 0 30px ${neonGreen},
-              0 0 70px ${neonLightGreen},
-              0 0 90px ${neonDarkGreen}`)
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.boxShadow = `
-              0 0 15px ${neonGreen},
-              0 0 40px ${neonLightGreen},
-              0 0 60px ${neonDarkGreen}`)
-          }
-        />
+        >
+          画像をアップロードして、AIが面白いコメントを生成します
+        </p>
+
+        {/* ドラッグ&ドロップエリア + ファイル選択ボタン */}
+        <div
+          style={{
+            position: "relative",
+            marginBottom: "2rem",
+            padding: "3rem 2rem",
+            border: isDragOver
+              ? `2px dashed ${primaryColor}`
+              : `2px dashed ${mediumGray}`,
+            borderRadius: "16px",
+            background: isDragOver ? "rgba(79, 70, 229, 0.05)" : "#ffffff",
+            transition: "all 0.3s ease",
+            minHeight: "200px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1.5rem",
+            boxShadow: isDragOver
+              ? "0 10px 25px rgba(79, 70, 229, 0.15)"
+              : "0 4px 6px rgba(0, 0, 0, 0.05)",
+          }}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            id="file-input"
+            style={{
+              position: "absolute",
+              opacity: 0,
+              width: "100%",
+              height: "100%",
+              cursor: "pointer",
+              zIndex: 2,
+            }}
+          />
+
+          <div
+            style={{
+              fontSize: "3rem",
+              marginBottom: "0.5rem",
+              transition: "transform 0.2s ease",
+              transform: isDragOver ? "scale(1.1)" : "scale(1)",
+            }}
+          >
+            {isDragOver ? "📥" : ""}
+          </div>
+
+          <label
+            htmlFor="file-input"
+            style={{
+              display: "inline-block",
+              padding: "1rem 2rem",
+              borderRadius: "12px",
+              border: "none",
+              background: `linear-gradient(135deg, ${primaryColor}, ${secondaryColor})`,
+              color: "#ffffff",
+              fontWeight: "600",
+              fontSize: "1.1rem",
+              cursor: "pointer",
+              boxShadow: "0 4px 14px rgba(79, 70, 229, 0.3)",
+              transition: "all 0.2s ease",
+              userSelect: "none",
+              position: "relative",
+              textAlign: "center",
+              minWidth: "200px",
+              zIndex: 3,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow =
+                "0 6px 20px rgba(79, 70, 229, 0.4)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow =
+                "0 4px 14px rgba(79, 70, 229, 0.3)";
+            }}
+          >
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+            >
+              画像を選択
+            </span>
+          </label>
+
+          <p
+            style={{
+              color: mediumGray,
+              fontSize: "0.9rem",
+              margin: 0,
+              zIndex: 1,
+              fontWeight: "400",
+            }}
+          >
+            {isDragOver
+              ? "ここにドロップしてください！"
+              : "画像をドラッグ&ドロップ または クリックして選択"}
+          </p>
+        </div>
 
         {previewUrl && (
           <img
             src={previewUrl}
             alt="プレビュー"
             style={{
-              maxWidth: "300px",
-              maxHeight: "300px",
-              borderRadius: "20px",
-              border: `4px solid ${neonLightGreen}`,
-              boxShadow: `0 0 20px ${neonLightGreen}, 0 0 30px ${neonGreen}`,
-              marginBottom: "1.5rem",
-              filter: isUploading ? "blur(2px)" : "none",
+              maxWidth: "320px",
+              maxHeight: "320px",
+              borderRadius: "12px",
+              border: "none",
+              boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
+              marginBottom: "2rem",
+              filter: isUploading ? "blur(1px)" : "none",
               transition: "filter 0.3s ease",
-              animation: isUploading ? "pulseBlur 1.5s infinite" : undefined,
+              opacity: isUploading ? 0.7 : 1,
               zIndex: 1,
             }}
           />
         )}
 
         {isUploading && (
-          <p
+          <div
             style={{
-              color: neonGreen,
-              fontSize: "1.4rem",
-              fontWeight: "bold",
-              textShadow: `0 0 8px ${neonGreen}`,
-              marginBottom: "1.5rem",
-              zIndex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1rem",
+              marginBottom: "2rem",
             }}
           >
-            コメント生成中...
-          </p>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                border: `3px solid ${lightGray}`,
+                borderTop: `3px solid ${primaryColor}`,
+                borderRadius: "50%",
+                animation: "spin 1s linear infinite",
+              }}
+            />
+            <p
+              style={{
+                color: textColor,
+                fontSize: "1.1rem",
+                fontWeight: "500",
+                margin: 0,
+              }}
+            >
+              コメント生成中...
+            </p>
+          </div>
         )}
 
         {comment && !isUploading && (
           <div
             style={{
-              background:
-                "linear-gradient(135deg, rgba(255,0,224,0.8), rgba(0,255,255,0.8))",
-              borderRadius: "20px",
-              padding: "1rem 1.5rem",
-              maxWidth: "350px",
-              color: "#fff",
-              fontSize: "1.3rem",
-              boxShadow: `0 0 20px ${neonGreen}, 0 0 40px ${neonLightGreen}`,
+              background: "#ffffff",
+              borderRadius: "16px",
+              padding: "2rem",
+              maxWidth: "400px",
+              color: textColor,
+              fontSize: "1.1rem",
+              boxShadow: "0 8px 25px rgba(0, 0, 0, 0.1)",
               whiteSpace: "pre-wrap",
-              textAlign: "center",
-              animation: "neonTextGlow 1.5s ease-in-out infinite alternate",
+              textAlign: "left",
               marginBottom: "2rem",
               zIndex: 1,
+              border: `1px solid ${lightGray}`,
             }}
           >
-            <strong>🎤 コメント:</strong>
-            <p style={{ marginTop: "0.6rem" }}>{comment}</p>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                marginBottom: "1rem",
+                color: primaryColor,
+                fontWeight: "600",
+              }}
+            >
+              AIコメント
+            </div>
+            <p
+              style={{
+                margin: 0,
+                lineHeight: "1.6",
+                fontWeight: "400",
+              }}
+            >
+              {comment}
+            </p>
           </div>
         )}
-
-        
-
       </div>
 
       {/* keyframe animations */}
       <style>{`
-        @keyframes pulseBlur {
-          0%, 100% { filter: blur(0); }
-          50% { filter: blur(2px); }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
-        @keyframes neonTextGlow {
-          0% {
-            text-shadow:
-              0 0 5px ${neonGreen},
-              0 0 10px ${neonGreen},
-              0 0 20px ${neonLightGreen},
-              0 0 30px ${neonDarkGreen},
-              0 0 40px ${neonDarkGreen},
-              0 0 50px ${neonGreen};
-          }
-          100% {
-            text-shadow:
-              0 0 20px ${neonGreen},
-              0 0 30px ${neonGreen},
-              0 0 40px ${neonLightGreen},
-              0 0 50px ${neonDarkGreen},
-              0 0 60px ${neonDarkGreen},
-              0 0 70px ${neonGreen};
-          }
-        }
+        
         /* スクロールバー非表示 */
         ::-webkit-scrollbar {
           display: none;
         }
+        
+        /* スムーズなスクロール */
+        html {
+          scroll-behavior: smooth;
+        }
       `}</style>
       {isSystemOpen && (
-  
-    
-      
-      <div
-    style={{
-      position: "fixed",
-      top: 0, left: 0, width: "100vw", height: "100vh",
-      backgroundColor: "rgba(0,0,0,0.7)",
-      display: "flex", justifyContent: "center", alignItems: "center",
-      zIndex: 1000,
-    }}
-    onClick={() => setIsSystemOpen(false)}
-  >
-    <div
-      style={{
-        background: "linear-gradient(135deg, rgba(255,0,224,0.9), rgba(0,255,255,0.9))",
-        padding: "2rem",
-        borderRadius: "20px",
-        color: "#fff",
-        fontFamily: "'Orbitron', sans-serif",
-        maxWidth: "400px",
-        boxShadow: `0 0 20px ${neonGreen}, 0 0 40px ${neonLightGreen}`,
-        textAlign: "center",
-        position: "relative",
-      }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <h2 style={{ marginBottom: "1.5rem" }}>System設定</h2>
-
-      
-    </div>
-  </div>
-)}
-
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setIsSystemOpen(false)}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              padding: "2rem",
+              borderRadius: "16px",
+              color: textColor,
+              fontFamily: "'Inter', sans-serif",
+              maxWidth: "400px",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.2)",
+              textAlign: "center",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2
+              style={{
+                marginBottom: "1.5rem",
+                color: primaryColor,
+                fontWeight: "600",
+              }}
+            >
+              設定
+            </h2>
+          </div>
+        </div>
+      )}
     </>
   );
 };
